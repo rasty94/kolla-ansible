@@ -7,7 +7,7 @@
     group: "{{ config_owner_group }}"
     mode: "0770"
   become: true
-  with_dict: "{{ magnum_services | select_services_enabled_and_mapped_to_host }}"
+  loop: "{{ magnum_services | select_services_enabled_and_mapped_to_host | dict2items }}"
 
 - name: Check if policies shall be overwritten
   stat:

@@ -223,18 +223,18 @@ in a testing environment.
 In this mode it is still necessary to configure ``kolla_internal_vip_address``,
 and it should take the IP address of the ``api_interface`` interface.
 
-External Elasticsearch/Kibana environment
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+External OpenSearch/OpenSearch Dashboards environment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-It is possible to use an external Elasticsearch/Kibana environment. To do this
+It is possible to use an external OpenSearch/OpenSearch Dashboards environment. To do this
 first disable the deployment of the central logging.
 
 .. code-block:: yaml
 
    enable_central_logging: "no"
 
-Now you can use the parameter ``elasticsearch_address`` to configure the
-address of the external Elasticsearch environment.
+Now you can use the parameter ``opensearch_address`` to configure the
+address of the external OpenSearch environment.
 
 Non-default <service> port
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

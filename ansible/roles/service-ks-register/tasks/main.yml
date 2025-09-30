@@ -58,7 +58,7 @@
           auth: "{{ service_ks_register_auth }}"
           interface: "{{ service_ks_register_interface }}"
           cacert: "{{ service_ks_cacert }}"
-      with_items: "{{ service_ks_register_users | map(attribute='project') | unique | list }}"
+      loop: "{{ service_ks_register_users | map(attribute='project') | unique | list }}"
       register: service_ks_register_result
       until: service_ks_register_result is success
       retries: "{{ service_ks_register_retries }}"
@@ -78,7 +78,7 @@
           auth: "{{ service_ks_register_auth }}"
           interface: "{{ service_ks_register_interface }}"
           cacert: "{{ service_ks_cacert }}"
-      with_items: "{{ service_ks_register_users }}"
+      loop: "{{ service_ks_register_users }}"
       loop_control:
         label: "{{ item.user }} -> {{ item.project }}"
       register: service_ks_register_result
@@ -96,7 +96,7 @@
           auth: "{{ service_ks_register_auth }}"
           interface: "{{ service_ks_register_interface }}"
           cacert: "{{ service_ks_cacert }}"
-      with_items: "{{ service_ks_register_users | map(attribute='role') | unique | list + service_ks_register_roles }}"
+      loop: "{{ service_ks_register_users | map(attribute='role') | unique | list + service_ks_register_roles }}"
       register: service_ks_register_result
       until: service_ks_register_result is success
       retries: "{{ service_ks_register_retries }}"
@@ -117,7 +117,7 @@
           interface: "{{ service_ks_register_interface }}"
           cacert: "{{ service_ks_cacert }}"
           state: "{{ item.state | default('present') }}"
-      with_items: "{{ service_ks_register_users + service_ks_register_user_roles }}"
+      loop: "{{ service_ks_register_users + service_ks_register_user_roles }}"
       loop_control:
         label: "{{ item.user }} -> {{ item.project | default(item.domain) | default(item.system) }} -> {{ item.role }}"
       register: service_ks_register_result

@@ -23,7 +23,7 @@ Enable ``OSprofiler`` in ``/etc/kolla/globals.yml`` file:
 .. code-block:: yaml
 
    enable_osprofiler: "yes"
-   enable_elasticsearch: "yes"
+   enable_opensearch: "yes"
 
 Verify operation
 ----------------
@@ -46,7 +46,7 @@ The previous command will output the command to retrieve OSprofiler trace.
 .. code-block:: console
 
    $ osprofiler trace show --html <TRACE_ID> --connection-string \
-     elasticsearch://<api_interface_address>:9200
+     opensearch://<api_interface_address>:9200
 
 For more information about how OSprofiler works, see
 `OSProfiler – Cross-project profiling library

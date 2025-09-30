@@ -85,10 +85,10 @@ grouped together and changing these around can break your deployment:
 
 .. code-block:: ini
 
-   [kibana:children]
+   [opensearch-dashboards:children]
    control
 
-   [elasticsearch:children]
+   [opensearch:children]
    control
 
    [loadbalancer:children]

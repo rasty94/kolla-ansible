@@ -21,7 +21,7 @@
       group_by:
         key: "{{ item }}"
       changed_when: false
-      with_items:
+      loop:
         - enable_aodh_{{ enable_aodh | bool }}
         - enable_barbican_{{ enable_barbican | bool }}
         - enable_blazar_{{ enable_blazar | bool }}

@@ -70,4 +70,4 @@
   vars:
     ping_command: "{{ 'ping' if managed_network_address_family == 'ipv4' else 'ping6' }}"
   command: "{{ ping_command }} -c1 {{ hostvars[item].managed_interface_address }}"
-  with_inventory_hostnames: all
+  loop: "{{ groups['all'] }}"

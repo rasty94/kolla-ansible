@@ -27,8 +27,7 @@
     state: present
     key: "{{ cephadm_ssh_key.public_key }}"
   become: True
-  with_inventory_hostnames:
-    - all
+  loop: "{{ groups['all'] }}"
   delegate_to: "{{ item }}"
 
 - name: Bootstrap cephadm

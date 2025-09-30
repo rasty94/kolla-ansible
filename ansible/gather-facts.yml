@@ -52,7 +52,7 @@
         gather_subset: "{{ kolla_ansible_setup_gather_subset }}"
       delegate_facts: True
       delegate_to: "{{ item }}"
-      with_items: "{{ delegate_hosts }}"
+      loop: "{{ delegate_hosts }}"
       when:
         # We gathered facts for all hosts in the batch during the first play.
         # Ensure that we don't try again if they failed.

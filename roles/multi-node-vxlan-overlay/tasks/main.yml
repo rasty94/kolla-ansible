@@ -43,7 +43,7 @@
   vars:
     dest_ip: "{{ hostvars[item].tunnel_local_address }}"
   command: bridge fdb append 00:00:00:00:00:00 dev {{ vxlan_interface_name }} dst {{ dest_ip }}
-  with_inventory_hostnames: all
+  loop: "{{ groups['all'] }}"
   when: item != inventory_hostname
 
 - name: Bring VXLAN interface up

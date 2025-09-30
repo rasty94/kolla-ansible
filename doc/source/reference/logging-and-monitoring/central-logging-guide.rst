@@ -49,9 +49,9 @@ variables:
 - ``opensearch_hard_retention_period_days``
 
 By default the soft and hard retention periods are 30 and 60 days
-respectively. If you are upgrading from ElasticSearch, and have previously
-configured ``elasticsearch_curator_soft_retention_period_days`` or
-``elasticsearch_curator_hard_retention_period_days``, those variables will
+respectively. If you are upgrading from OpenSearch, and have previously
+configured ``opensearch_curator_soft_retention_period_days`` or
+``opensearch_curator_hard_retention_period_days``, those variables will
 be used instead of the defaults. You should migrate your configuration to
 use the new variable names before the Caracal release.
 
@@ -261,7 +261,7 @@ Custom log forwarding
 ---------------------
 
 In some scenarios it may be useful to forward logs to a logging service other
-than elasticsearch.  This can be done by configuring custom fluentd outputs.
+than OpenSearch.  This can be done by configuring custom fluentd outputs.
 
 Configuration of custom fluentd outputs is possible by placing output
 configuration files in ``/etc/kolla/config/fluentd/output/*.conf`` on the

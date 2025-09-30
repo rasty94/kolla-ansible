@@ -16,6 +16,7 @@ import argparse
 import hmac
 import os
 import random
+import secrets
 import stat
 import string
 import sys
@@ -56,8 +57,54 @@ def generate_RSA(bits=4096):
     return private_key, public_key
 
 
+def generate_password(length=40, include_symbols=True, require_uppercase=True,
+                      require_lowercase=True, require_digits=True):
+    """Generate a secure password with configurable complexity."""
+    # Define character sets
+    lower_chars = string.ascii_lowercase
+    upper_chars = string.ascii_uppercase
+    digit_chars = string.digits
+    symbol_chars = '+-.*'  # Only these special characters
+
+    # Ensure at least one of each required type
+    password = []
+    if require_lowercase:
+        password.append(secrets.choice(lower_chars))
+    if require_uppercase:
+        password.append(secrets.choice(upper_chars))
+    if require_digits:
+        password.append(secrets.choice(digit_chars))
+    if include_symbols:
+        password.append(secrets.choice(symbol_chars))
+
+    # Fill the rest of the password
+    all_chars = ''
+    if require_lowercase:
+        all_chars += lower_chars
+    if require_uppercase:
+        all_chars += upper_chars
+    if require_digits:
+        all_chars += digit_chars
+    if include_symbols:
+        all_chars += symbol_chars
+
+    if not all_chars:
+        all_chars = string.ascii_letters + string.digits  # fallback
+
+    # Fill remaining length
+    remaining_length = length - len(password)
+    if remaining_length > 0:
+        password.extend(secrets.choice(all_chars) for _ in range(remaining_length))
+
+    # Shuffle to avoid predictable patterns
+    secrets.SystemRandom().shuffle(password)
+
+    return ''.join(password)
+
+
 def genpwd(passwords_file, length, uuid_keys, ssh_keys, blank_keys,
-           fernet_keys, hmac_md5_keys, bcrypt_keys):
+           fernet_keys, hmac_md5_keys, bcrypt_keys,
+           include_symbols, require_uppercase, require_lowercase, require_digits):
     try:
         with open(passwords_file, 'r') as f:
             passwords = yaml.safe_load(f.read())
@@ -105,11 +152,13 @@ def genpwd(passwords_file, length, uuid_keys, ssh_keys, blank_keys,
                 # ansible library.
                 passwords[k] = random_salt(22)
             else:
-                passwords[k] = ''.join([
-                    random.SystemRandom().choice(
-                        string.ascii_letters + string.digits)
-                    for n in range(length)
-                ])
+                passwords[k] = generate_password(
+                    length=length,
+                    include_symbols=include_symbols,
+                    require_uppercase=require_uppercase,
+                    require_lowercase=require_lowercase,
+                    require_digits=require_digits
+                )
 
     try:
         os.remove(passwords_file)
@@ -129,6 +178,21 @@ def main():
         '-p', '--passwords', type=str,
         default=os.path.abspath('/etc/kolla/passwords.yml'),
         help=('Path to the passwords.yml file'))
+    parser.add_argument(
+        '--password-length', type=int, default=40,
+        help='Length of generated passwords')
+    parser.add_argument(
+        '--include-symbols', action='store_true', default=True,
+        help='Include symbols in passwords')
+    parser.add_argument(
+        '--require-uppercase', action='store_true', default=True,
+        help='Require uppercase letters in passwords')
+    parser.add_argument(
+        '--require-lowercase', action='store_true', default=True,
+        help='Require lowercase letters in passwords')
+    parser.add_argument(
+        '--require-digits', action='store_true', default=True,
+        help='Require digits in passwords')
 
     args = parser.parse_args()
     passwords_file = os.path.expanduser(args.passwords)
@@ -160,11 +224,9 @@ def main():
     # bcrypt salts
     bcrypt_keys = ['prometheus_bcrypt_salt']
 
-    # length of password
-    length = 40
-
-    genpwd(passwords_file, length, uuid_keys, ssh_keys, blank_keys,
-           fernet_keys, hmac_md5_keys, bcrypt_keys)
+    genpwd(passwords_file, args.password_length, uuid_keys, ssh_keys, blank_keys,
+           fernet_keys, hmac_md5_keys, bcrypt_keys,
+           args.include_symbols, args.require_uppercase, args.require_lowercase, args.require_digits)
 
 
 if __name__ == '__main__':

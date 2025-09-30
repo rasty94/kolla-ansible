@@ -70,13 +70,13 @@ your ``globals.yml`` configuration file:
 
    cloudkitty_storage_backend: opensearch
 
-Using an external Elasticsearch backend is still possible with the following
+Using an external OpenSearch backend is still possible with the following
 configuration:
 
 .. code-block:: yaml
 
-   cloudkitty_storage_backend: elasticsearch
-   cloudkitty_elasticsearch_url: http://HOST:PORT
+   cloudkitty_storage_backend: opensearch
+   cloudkitty_opensearch_url: http://HOST:PORT
 
 You can only use one backend type at a time, selecting ``opensearch``
 will automatically enable OpenSearch deployment and creation of the
