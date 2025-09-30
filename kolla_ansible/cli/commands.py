@@ -517,3 +517,150 @@ class MigrateContainerEngine(KollaAnsibleMixin, Command):
         playbooks = _choose_playbooks(parsed_args, "migrate-container-engine")
 
         self.run_playbooks(parsed_args, playbooks)
+
+
+class SetupWizard(Command):
+    """Interactive wizard for initial Kolla Ansible setup"""
+
+    def take_action(self, parsed_args):
+        import os
+        import yaml
+
+        print("=== Kolla Ansible Setup Wizard ===")
+        print("This wizard will help you configure basic settings for Kolla Ansible.")
+        print()
+
+        # Check if globals.yml exists
+        globals_path = "/etc/kolla/globals.yml"
+        if os.path.exists(globals_path):
+            print(f"Found existing globals.yml at {globals_path}")
+            overwrite = input("Do you want to overwrite it? (y/N): ").lower().strip()
+            if overwrite != 'y':
+                print("Setup cancelled.")
+                return
+
+        # Collect basic configuration
+        config = {}
+
+        print("\n1. Network Configuration:")
+        config['kolla_internal_vip_address'] = input("Internal VIP address (e.g., 192.168.1.100): ").strip()
+        config['kolla_external_vip_address'] = input("External VIP address (leave empty if same as internal): ").strip() or config['kolla_internal_vip_address']
+        config['network_interface'] = input("Network interface for external network (e.g., eth0): ").strip()
+
+        print("\n2. Container Engine:")
+        engine = input("Container engine (docker/podman) [docker]: ").strip().lower()
+        config['kolla_base_distro'] = engine if engine in ['docker', 'podman'] else 'docker'
+
+        print("\n3. OpenStack Services:")
+        services = input("Enable all-in-one deployment? (y/N): ").lower().strip()
+        if services == 'y':
+            config['enable_haproxy'] = 'yes'
+            config['enable_mariadb'] = 'yes'
+            config['enable_rabbitmq'] = 'yes'
+            config['enable_keystone'] = 'yes'
+            config['enable_glance'] = 'yes'
+            config['enable_nova'] = 'yes'
+            config['enable_neutron'] = 'yes'
+            config['enable_cinder'] = 'yes'
+        else:
+            print("For advanced configuration, edit /etc/kolla/globals.yml manually.")
+
+        print("\n4. Storage:")
+        storage = input("Storage backend (lvm/ceph/none) [none]: ").strip().lower()
+        if storage == 'lvm':
+            config['enable_cinder_backend_lvm'] = 'yes'
+        elif storage == 'ceph':
+            config['enable_cinder_backend_rbd'] = 'yes'
+
+        # Write configuration
+        os.makedirs("/etc/kolla", exist_ok=True)
+        with open(globals_path, 'w') as f:
+            yaml.dump(config, f, default_flow_style=False)
+
+        print(f"\nConfiguration saved to {globals_path}")
+        print("Next steps:")
+        print("1. Edit /etc/kolla/globals.yml for advanced settings")
+        print("2. Generate passwords: kolla-genpwd")
+        print("3. Run bootstrap: kolla-ansible bootstrap-servers")
+        print("4. Deploy: kolla-ansible deploy")
+
+
+class ValidateSetup(KollaAnsibleMixin, Command):
+    """Validate Kolla Ansible configuration before deployment"""
+
+    def take_action(self, parsed_args):
+        import os
+        import yaml
+
+        print("=== Kolla Ansible Configuration Validation ===")
+
+        errors = []
+        warnings = []
+
+        # Check globals.yml
+        globals_path = "/etc/kolla/globals.yml"
+        if not os.path.exists(globals_path):
+            errors.append(f"globals.yml not found at {globals_path}")
+        else:
+            try:
+                with open(globals_path, 'r') as f:
+                    config = yaml.safe_load(f)
+
+                # Validate required fields
+                required_fields = ['kolla_internal_vip_address', 'network_interface']
+                for field in required_fields:
+                    if field not in config or not config[field]:
+                        errors.append(f"Missing required field: {field}")
+
+                # Validate IP addresses
+                import ipaddress
+                for field in ['kolla_internal_vip_address', 'kolla_external_vip_address']:
+                    if field in config and config[field]:
+                        try:
+                            ipaddress.ip_address(config[field])
+                        except ValueError:
+                            errors.append(f"Invalid IP address for {field}: {config[field]}")
+
+                # Check network interface
+                if 'network_interface' in config and config['network_interface']:
+                    # Basic check - could be enhanced with actual interface validation
+                    pass
+
+            except yaml.YAMLError as e:
+                errors.append(f"Invalid YAML in globals.yml: {e}")
+
+        # Check passwords.yml
+        passwords_path = "/etc/kolla/passwords.yml"
+        if not os.path.exists(passwords_path):
+            warnings.append(f"passwords.yml not found at {passwords_path}. Run kolla-genpwd to generate.")
+        else:
+            try:
+                with open(passwords_path, 'r') as f:
+                    passwords = yaml.safe_load(f)
+                if not passwords:
+                    warnings.append("passwords.yml appears to be empty")
+            except yaml.YAMLError as e:
+                errors.append(f"Invalid YAML in passwords.yml: {e}")
+
+        # Check inventory
+        inventory_path = "/etc/kolla/inventory"
+        if not os.path.exists(inventory_path):
+            warnings.append(f"Inventory not found at {inventory_path}")
+
+        # Report results
+        if errors:
+            print("❌ ERRORS:")
+            for error in errors:
+                print(f"  - {error}")
+        else:
+            print("✅ No critical errors found")
+
+        if warnings:
+            print("\n⚠️  WARNINGS:")
+            for warning in warnings:
+                print(f"  - {warning}")
+
+        if not errors:
+            print("\n🎉 Configuration validation passed!")
+        else:
+            print("\n❌ Please fix the errors before deploying.")
