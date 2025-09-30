@@ -55,10 +55,10 @@
   - Mejorar integración con servicios existentes como Nova, Neutron, Cinder
 
 ### 2. Simplificación y Usabilidad
-- [ ] **Mejorar configuración inicial**
-  - Crear wizard interactivo para setup inicial (similar a kolla-ansible bootstrap)
+- [x] **Mejorar configuración inicial**
+  - [x] Crear wizard interactivo para setup inicial (similar a kolla-ansible bootstrap) (implementado comando setup-wizard)
   - Reducir número de variables requeridas con valores por defecto inteligentes
-  - Añadir validación automática de configuración antes del deployment
+  - [x] Añadir validación automática de configuración antes del deployment (implementado comando validate-setup)
 
 - [ ] **Optimización de deployment time**
   - Implementar paralelización inteligente de tasks Ansible
