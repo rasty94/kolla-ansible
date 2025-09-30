@@ -1,0 +1,34 @@
+[console_scripts]
+kolla-ansible = kolla_ansible.cmd.kolla_ansible:main
+kolla-genpwd = kolla_ansible.cmd.genpwd:main
+kolla-mergepwd = kolla_ansible.cmd.mergepwd:main
+kolla-readpwd = kolla_ansible.cmd.readpwd:main
+kolla-writepwd = kolla_ansible.cmd.writepwd:main
+
+[kolla_ansible.cli]
+bootstrap-servers = kolla_ansible.cli.commands:BootstrapServers
+certificates = kolla_ansible.cli.commands:Certificates
+check = kolla_ansible.cli.commands:Check
+deploy = kolla_ansible.cli.commands:Deploy
+deploy-bifrost = kolla_ansible.cli.commands:BifrostDeploy
+deploy-containers = kolla_ansible.cli.commands:DeployContainers
+deploy-servers = kolla_ansible.cli.commands:BifrostDeployServers
+destroy = kolla_ansible.cli.commands:Destroy
+gather-facts = kolla_ansible.cli.commands:GatherFacts
+genconfig = kolla_ansible.cli.commands:GenConfig
+install-deps = kolla_ansible.cli.commands:InstallDeps
+mariadb-backup = kolla_ansible.cli.commands:MariaDBBackup
+mariadb-recovery = kolla_ansible.cli.commands:MariaDBRecovery
+migrate-container-engine = kolla_ansible.cli.commands:MigrateContainerEngine
+nova-libvirt-cleanup = kolla_ansible.cli.commands:NovaLibvirtCleanup
+octavia-certificates = kolla_ansible.cli.commands:OctaviaCertificates
+post-deploy = kolla_ansible.cli.commands:Postdeploy
+prechecks = kolla_ansible.cli.commands:Prechecks
+prune-images = kolla_ansible.cli.commands:PruneImages
+pull = kolla_ansible.cli.commands:Pull
+rabbitmq-reset-state = kolla_ansible.cli.commands:RabbitMQResetState
+reconfigure = kolla_ansible.cli.commands:Reconfigure
+stop = kolla_ansible.cli.commands:Stop
+upgrade = kolla_ansible.cli.commands:Upgrade
+upgrade-bifrost = kolla_ansible.cli.commands:BifrostUpgrade
+validate-config = kolla_ansible.cli.commands:ValidateConfig

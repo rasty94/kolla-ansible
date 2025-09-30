@@ -1,0 +1,7 @@
+#!/Users/antoniorodriguez/Desktop/GIT/GITHUB/kolla-ansible-rasty94/venv/bin/python3.12
+import sys
+from ansible.cli.galaxy import main
+if __name__ == '__main__':
+    if sys.argv[0].endswith('.exe'):
+        sys.argv[0] = sys.argv[0][:-4]
+    sys.exit(main())
