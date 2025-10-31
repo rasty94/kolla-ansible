@@ -1,4 +1,4 @@
-#!/Users/antoniorodriguez/Desktop/GIT/GITHUB/kolla-ansible-rasty94/venv/bin/python3.12
+#!/Users/antoniorodriguez/GITHUB-RASTY/kolla-ansible/venv/bin/python3.12
 # -*- coding: utf-8 -*-
 import re
 import sys

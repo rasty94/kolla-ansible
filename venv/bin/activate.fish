@@ -33,7 +33,7 @@ end
 # Unset irrelevant variables.
 deactivate nondestructive
 
-set -gx VIRTUAL_ENV "/Users/antoniorodriguez/Desktop/GIT/GITHUB/kolla-ansible-rasty94/venv"
+set -gx VIRTUAL_ENV "/Users/antoniorodriguez/GITHUB-RASTY/kolla-ansible/venv"
 
 set -gx _OLD_VIRTUAL_PATH $PATH
 set -gx PATH "$VIRTUAL_ENV/bin" $PATH
