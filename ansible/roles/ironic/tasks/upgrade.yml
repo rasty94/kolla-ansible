@@ -28,7 +28,9 @@
   when: not ironic_upgrade_skip_wait_check | bool
 
 - include_tasks: rolling_upgrade.yml
+  name: "Import rolling_upgrade.yml"
   when: ironic_enable_rolling_upgrade | bool
 
 - include_tasks: legacy_upgrade.yml
+  name: "Import legacy_upgrade.yml"
   when: not ironic_enable_rolling_upgrade | bool

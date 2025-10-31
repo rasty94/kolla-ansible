@@ -1,13 +1,17 @@
 ---
 - import_tasks: config.yml
+  name: "Import config.yml"
 
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 - include_tasks: clone.yml
+  name: "Import clone.yml"
   when:
     - horizon_dev_mode | bool
 
 - include_tasks: bootstrap_service.yml
+  name: "Import bootstrap_service.yml"
   when: horizon_backend_database | bool
 
 - name: Flush handlers

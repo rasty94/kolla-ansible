@@ -52,6 +52,7 @@
     - magnum_kubeconfig_file.stat.exists
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - kolla_copy_ca_into_containers | bool
 

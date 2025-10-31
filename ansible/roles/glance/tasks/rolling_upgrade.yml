@@ -5,9 +5,11 @@
 
 # Upgrade first node (NEW NODE in the Glance documentation)
 - include_tasks: config.yml
+  name: "Import config.yml"
   when: inventory_hostname == glance_api_hosts[0]
 
 - include_tasks: stop_service.yml
+  name: "Import stop_service.yml"
   when: inventory_hostname == glance_api_hosts[0]
 
 - name: Enable log_bin_trust_function_creators function
@@ -73,9 +75,11 @@
 
 # Upgrade remaining node
 - include_tasks: config.yml
+  name: "Import config.yml"
   when: inventory_hostname != glance_api_hosts[0]
 
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 - name: Flush handlers
   meta: flush_handlers

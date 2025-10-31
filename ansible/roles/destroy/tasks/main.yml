@@ -1,8 +1,12 @@
 ---
 - include_tasks: validate_docker_execute.yml
+  name: "Import validate_docker_execute.yml"
 
 - include_tasks: cleanup_containers.yml
+  name: "Import cleanup_containers.yml"
 
 - include_tasks: cleanup_images.yml
+  name: "Import cleanup_images.yml"
 
 - include_tasks: cleanup_host.yml
+  name: "Import cleanup_host.yml"

@@ -235,3 +235,4 @@
     - bootstrap_host == inventory_hostname
 
 - import_tasks: check.yml
+  name: "Import check.yml"

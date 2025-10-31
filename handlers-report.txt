@@ -1,0 +1,551 @@
+================================================================================
+HANDLER CANDIDATES REPORT
+================================================================================
+
+Total candidates found: 83
+
+Top 10 roles with most candidates:
+  - mariadb: 7
+  - nova: 7
+  - nova-cell: 7
+  - glance: 5
+  - octavia: 5
+  - ironic: 4
+  - neutron: 4
+  - bifrost: 3
+  - cinder: 3
+
+================================================================================
+DETAILED CANDIDATES
+================================================================================
+
+### Role: aodh
+--------------------------------------------------------------------------------
+
+File: ansible/roles/aodh/tasks/bootstrap_service.yml:2
+Task: Running aodh bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: barbican
+--------------------------------------------------------------------------------
+
+File: ansible/roles/barbican/tasks/bootstrap_service.yml:2
+Task: Running barbican bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: bifrost
+--------------------------------------------------------------------------------
+
+File: ansible/roles/bifrost/tasks/reconfigure.yml:2
+Task: Task #5
+Reason: Conditional on change: remove_containers.changed
+
+
+File: ansible/roles/bifrost/tasks/reconfigure.yml:2
+Task: Restart containers
+Reason: Name contains action keyword: 'restart containers'; kolla_container action: restart_container
+
+
+File: ansible/roles/bifrost/tasks/start.yml:2
+Task: Starting bifrost deploy container
+Reason: kolla_container action: start_container
+
+
+### Role: blazar
+--------------------------------------------------------------------------------
+
+File: ansible/roles/blazar/tasks/bootstrap_service.yml:2
+Task: Running blazar bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: ceilometer
+--------------------------------------------------------------------------------
+
+File: ansible/roles/ceilometer/tasks/bootstrap_service.yml:2
+Task: Running Ceilometer bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: cinder
+--------------------------------------------------------------------------------
+
+File: ansible/roles/cinder/tasks/bootstrap_service.yml:2
+Task: Running Cinder bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/cinder/tasks/reload.yml:2
+Task: Reload cinder services to remove RPC version pin
+Reason: Name contains action keyword: 'reload cinder services to remove rpc version pin'; kolla_container action: restart_container
+
+
+File: ansible/roles/cinder/tasks/upgrade.yml:13
+Task: Running Cinder online schema migration
+Reason: kolla_container action: start_container
+
+
+### Role: cloudkitty
+--------------------------------------------------------------------------------
+
+File: ansible/roles/cloudkitty/tasks/bootstrap_service.yml:2
+Task: Running Cloudkitty bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: common
+--------------------------------------------------------------------------------
+
+File: ansible/roles/common/tasks/config.yml:2
+Task: Restart systemd-tmpfiles
+Reason: Name contains action keyword: 'restart systemd-tmpfiles'
+
+
+### Role: container-engine-migration
+--------------------------------------------------------------------------------
+
+File: ansible/roles/container-engine-migration/tasks/migrate-volumes.yml:2
+Task: Stop all containers
+Reason: kolla_container action: stop_container
+
+
+### Role: cyborg
+--------------------------------------------------------------------------------
+
+File: ansible/roles/cyborg/tasks/bootstrap_service.yml:2
+Task: Running cyborg bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: designate
+--------------------------------------------------------------------------------
+
+File: ansible/roles/designate/tasks/bootstrap_service.yml:2
+Task: Running Designate bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: etcd
+--------------------------------------------------------------------------------
+
+File: ansible/roles/etcd/tasks/bootstrap_cluster.yml:2
+Task: Bootstrapping etcd cluster
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/etcd/tasks/bootstrap_services.yml:2
+Task: Bootstrapping etcd containers
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/etcd/tasks/restart_services.yml:2
+Task: Restart etcd container
+Reason: Name contains action keyword: 'restart etcd container'; kolla_container action: recreate_or_restart_container
+
+
+### Role: glance
+--------------------------------------------------------------------------------
+
+File: ansible/roles/glance/tasks/bootstrap_service.yml:2
+Task: Running Glance bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/glance/tasks/rolling_upgrade.yml:2
+Task: Running Glance database expand container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/glance/tasks/rolling_upgrade.yml:2
+Task: Running Glance database migrate container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/glance/tasks/rolling_upgrade.yml:2
+Task: Running Glance database contract container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/glance/tasks/stop_service.yml:2
+Task: Stop glance service
+Reason: kolla_container action: stop_container
+
+
+### Role: gnocchi
+--------------------------------------------------------------------------------
+
+File: ansible/roles/gnocchi/tasks/bootstrap_service.yml:2
+Task: Running gnocchi bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: grafana
+--------------------------------------------------------------------------------
+
+File: ansible/roles/grafana/tasks/upgrade.yml:2
+Task: Stopping all Grafana instances but the first node
+Reason: kolla_container action: stop_container
+
+
+### Role: heat
+--------------------------------------------------------------------------------
+
+File: ansible/roles/heat/tasks/bootstrap_service.yml:2
+Task: Running Heat bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: horizon
+--------------------------------------------------------------------------------
+
+File: ansible/roles/horizon/tasks/bootstrap_service.yml:2
+Task: Running Horizon bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: ironic
+--------------------------------------------------------------------------------
+
+File: ansible/roles/ironic/tasks/bootstrap_service.yml:2
+Task: Running Ironic bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/ironic/tasks/bootstrap_service.yml:2
+Task: Running Ironic Inspector bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/ironic/tasks/bootstrap_service.yml:2
+Task: Running ironic-tftp bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/ironic/tasks/rolling_upgrade.yml:22
+Task: Running Ironic online data migration
+Reason: kolla_container action: start_container
+
+
+### Role: keystone
+--------------------------------------------------------------------------------
+
+File: ansible/roles/keystone/tasks/bootstrap_service.yml:2
+Task: Running Keystone bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/keystone/tasks/bootstrap_service.yml:2
+Task: Running Keystone fernet bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: loadbalancer
+--------------------------------------------------------------------------------
+
+File: ansible/roles/loadbalancer/tasks/upgrade.yml:4
+Task: Stop and remove containers for haproxy exporter containers
+Reason: kolla_container action: stop_and_remove_container
+
+
+### Role: loadbalancer-config
+--------------------------------------------------------------------------------
+
+File: ansible/roles/loadbalancer-config/tasks/main.yml:0
+Task: Task #0
+Reason: Conditional on change: haproxy_config_install | bool
+
+
+### Role: magnum
+--------------------------------------------------------------------------------
+
+File: ansible/roles/magnum/tasks/bootstrap_service.yml:2
+Task: Running Magnum bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: manila
+--------------------------------------------------------------------------------
+
+File: ansible/roles/manila/tasks/bootstrap_service.yml:2
+Task: Running Manila bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: mariadb
+--------------------------------------------------------------------------------
+
+File: ansible/roles/mariadb/tasks/backup.yml:2
+Task: Taking {{ mariadb_backup_type }} database backup via Mariabackup
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/mariadb/tasks/bootstrap_cluster.yml:2
+Task: Running MariaDB bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/mariadb/tasks/post-upgrade.yml:2
+Task: Run upgrade in MariaDB container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/mariadb/tasks/recover_cluster.yml:2
+Task: Starting first MariaDB container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/mariadb/tasks/recover_cluster.yml:2
+Task: Restart slave MariaDB container(s)
+Reason: Name contains action keyword: 'restart slave mariadb container(s)'; kolla_container action: start_container
+
+
+File: ansible/roles/mariadb/tasks/recover_cluster.yml:2
+Task: Restart master MariaDB container(s)
+Reason: Name contains action keyword: 'restart master mariadb container(s)'; kolla_container action: recreate_or_restart_container
+
+
+File: ansible/roles/mariadb/tasks/restart_services.yml:2
+Task: Restart MariaDB container
+Reason: Name contains action keyword: 'restart mariadb container'; kolla_container action: recreate_or_restart_container
+
+
+### Role: masakari
+--------------------------------------------------------------------------------
+
+File: ansible/roles/masakari/tasks/bootstrap_service.yml:2
+Task: Running Masakari bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: mistral
+--------------------------------------------------------------------------------
+
+File: ansible/roles/mistral/tasks/bootstrap_service.yml:2
+Task: Running Mistral bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: neutron
+--------------------------------------------------------------------------------
+
+File: ansible/roles/neutron/tasks/bootstrap_service.yml:2
+Task: Running Neutron bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/neutron/tasks/rolling_upgrade.yml:13
+Task: Running Neutron database expand container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/neutron/tasks/rolling_upgrade.yml:13
+Task: Stopping all neutron-server for contract db
+Reason: kolla_container action: stop_container
+
+
+File: ansible/roles/neutron/tasks/rolling_upgrade.yml:13
+Task: Running Neutron database contract container
+Reason: kolla_container action: start_container
+
+
+### Role: nova
+--------------------------------------------------------------------------------
+
+File: ansible/roles/nova/tasks/bootstrap_service.yml:2
+Task: Running Nova API bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/nova/tasks/map_cell0.yml:3
+Task: Task #1
+Reason: Conditional on change: map_cell0.changed
+
+
+File: ansible/roles/nova/tasks/online_data_migrations.yml:2
+Task: Run Nova API online database migrations
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/nova/tasks/reload_api.yml:5
+Task: Reload nova API services to remove RPC version pin
+Reason: Name contains action keyword: 'reload nova api services to remove rpc version pin'; kolla_container action: recreate_or_restart_container
+
+
+File: ansible/roles/nova/tasks/reload_super_conductor.yml:5
+Task: Reload nova super conductor services to remove RPC version pin
+Reason: Name contains action keyword: 'reload nova super conductor services to remove rpc version pin'; kolla_container action: recreate_or_restart_container
+
+
+File: ansible/roles/nova/tasks/upgrade.yml:5
+Task: Run Nova upgrade checks
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/nova/tasks/upgrade.yml:5
+Task: Stopping top level nova services
+Reason: kolla_container action: stop_container
+
+
+### Role: nova-cell
+--------------------------------------------------------------------------------
+
+File: ansible/roles/nova-cell/tasks/bootstrap_service.yml:2
+Task: Running Nova cell bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/nova-cell/tasks/create_cells.yml:6
+Task: Create cell
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/nova-cell/tasks/create_cells.yml:6
+Task: Update cell
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/nova-cell/tasks/get_cell_settings.yml:2
+Task: Get a list of existing cells
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/nova-cell/tasks/online_data_migrations.yml:2
+Task: Run Nova cell online database migrations
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/nova-cell/tasks/reload.yml:21
+Task: Reload nova cell services to remove RPC version cap
+Reason: Name contains action keyword: 'reload nova cell services to remove rpc version cap'; kolla_container action: recreate_or_restart_container
+
+
+File: ansible/roles/nova-cell/tasks/upgrade.yml:4
+Task: Stopping nova cell services
+Reason: kolla_container action: stop_container
+
+
+### Role: octavia
+--------------------------------------------------------------------------------
+
+File: ansible/roles/octavia/tasks/bootstrap_service.yml:2
+Task: Running Octavia bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/octavia/tasks/config.yml:5
+Task: Task #0
+Reason: Conditional on change: octavia_auto_configure | bool
+
+
+File: ansible/roles/octavia/tasks/deploy.yml:18
+Task: Task #1
+Reason: Conditional on change: octavia_auto_configure | bool
+
+
+File: ansible/roles/octavia/tasks/hm-interface.yml:2
+Task: Restart octavia-interface.service if required
+Reason: Name contains action keyword: 'restart octavia-interface.service if required'; systemd state: restarted; Conditional on change: octavia_interface.changed
+
+
+File: ansible/roles/octavia/tasks/hm-interface.yml:2
+Task: Gather facts
+Reason: Conditional on change: octavia_interface.changed
+
+
+### Role: placement
+--------------------------------------------------------------------------------
+
+File: ansible/roles/placement/tasks/bootstrap_service.yml:2
+Task: Running placement bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/placement/tasks/upgrade.yml:13
+Task: Perform Placement online data migration
+Reason: kolla_container action: start_container
+
+
+### Role: rabbitmq
+--------------------------------------------------------------------------------
+
+File: ansible/roles/rabbitmq/tasks/bootstrap.yml:2
+Task: Running RabbitMQ bootstrap container
+Reason: kolla_container action: start_container; Conditional on change: rabbitmq_volume is changed
+
+
+File: ansible/roles/rabbitmq/tasks/restart_services.yml:2
+Task: Restart rabbitmq container
+Reason: Name contains action keyword: 'restart rabbitmq container'; kolla_container action: recreate_or_restart_container
+
+
+### Role: service-check-containers
+--------------------------------------------------------------------------------
+
+File: ansible/roles/service-check-containers/tasks/iterated.yml:2
+Task: {{ kolla_role_name | default(project_name) }} | Notify handlers to restart containers
+Reason: Name contains action keyword: '{{ kolla_role_name | default(project_name) }} | notify handlers to restart containers'
+
+
+File: ansible/roles/service-check-containers/tasks/main.yml:4
+Task: {{ kolla_role_name | default(project_name) }} | Notify handlers to restart containers
+Reason: Name contains action keyword: '{{ kolla_role_name | default(project_name) }} | notify handlers to restart containers'
+
+
+### Role: service-stop
+--------------------------------------------------------------------------------
+
+File: ansible/roles/service-stop/tasks/main.yml:2
+Task: Stopping {{ service_name }} containers
+Reason: kolla_container action: stop_container
+
+
+### Role: skyline
+--------------------------------------------------------------------------------
+
+File: ansible/roles/skyline/tasks/bootstrap_service.yml:2
+Task: Running Skyline bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: tacker
+--------------------------------------------------------------------------------
+
+File: ansible/roles/tacker/tasks/bootstrap_service.yml:2
+Task: Running tacker bootstrap container
+Reason: kolla_container action: start_container
+
+
+File: ansible/roles/tacker/tasks/upgrade.yml:2
+Task: Stop and remove extra tacker-conductor containers
+Reason: kolla_container action: stop_and_remove_container
+
+
+File: ansible/roles/tacker/tasks/upgrade.yml:2
+Task: Stop and remove extra tacker-server containers
+Reason: kolla_container action: stop_and_remove_container
+
+
+### Role: trove
+--------------------------------------------------------------------------------
+
+File: ansible/roles/trove/tasks/bootstrap_service.yml:2
+Task: Running trove bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: watcher
+--------------------------------------------------------------------------------
+
+File: ansible/roles/watcher/tasks/bootstrap_service.yml:2
+Task: Running Watcher bootstrap container
+Reason: kolla_container action: start_container
+
+
+### Role: zun
+--------------------------------------------------------------------------------
+
+File: ansible/roles/zun/tasks/bootstrap_service.yml:2
+Task: Running Zun bootstrap container
+Reason: kolla_container action: start_container

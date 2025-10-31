@@ -19,3 +19,4 @@
     - inventory_hostname in groups['loadbalancer']
 
 - import_tasks: deploy.yml
+  name: "Import deploy.yml"

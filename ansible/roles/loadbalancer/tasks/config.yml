@@ -167,6 +167,7 @@
     - "keepalived/keepalived.conf.j2"
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - loadbalancer_copy_certs
 

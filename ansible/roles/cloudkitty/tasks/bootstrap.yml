@@ -117,3 +117,4 @@
     - cloudkitty_index_opensearch.get('status') != 200
 
 - import_tasks: bootstrap_service.yml
+  name: "Import bootstrap_service.yml"

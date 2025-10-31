@@ -12,6 +12,7 @@
     - { name: bifrost-deploy, group: bifrost-deploy }
 
 - import_tasks: config.yml
+  name: "Import config.yml"
 
 - name: Check the configs
   become: true
@@ -57,6 +58,7 @@
     - "{{ check_results.results }}"
 
 - include_tasks: start.yml
+  name: "Import start.yml"
   when: remove_containers.changed
 
 - name: Restart containers

@@ -27,10 +27,13 @@
         dest: "{{ octavia_certs_work_dir }}/openssl.cnf"
 
     - import_tasks: server_ca.yml
+      name: "Import server_ca.yml"
 
     - import_tasks: client_ca.yml
+      name: "Import client_ca.yml"
 
     - import_tasks: client_cert.yml
+      name: "Import client_cert.yml"
 
     - name: Ensure {{ node_custom_config }}/octavia directory exists
       file:

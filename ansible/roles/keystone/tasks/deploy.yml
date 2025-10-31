@@ -1,21 +1,28 @@
 ---
 - import_tasks: config.yml
+  name: "Import config.yml"
 
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 - include_tasks: clone.yml
+  name: "Import clone.yml"
   when:
     - keystone_dev_mode | bool
 
 - import_tasks: bootstrap.yml
+  name: "Import bootstrap.yml"
 
 - name: Flush handlers
   meta: flush_handlers
 
 - include_tasks: distribute_fernet.yml
+  name: "Import distribute_fernet.yml"
 
 - import_tasks: register.yml
+  name: "Import register.yml"
 
 - include_tasks: register_identity_providers.yml
+  name: "Import register_identity_providers.yml"
   when:
     - enable_keystone_federation | bool

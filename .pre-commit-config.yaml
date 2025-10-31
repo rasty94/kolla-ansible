@@ -1,0 +1,108 @@
+# Pre-commit hooks for Kolla-Ansible
+# See https://pre-commit.com for more information
+
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+        args: ['--unsafe']  # Allow custom YAML tags
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: check-case-conflict
+      - id: mixed-line-ending
+
+  - repo: https://github.com/psf/black
+    rev: 23.12.1
+    hooks:
+      - id: black
+        language_version: python3
+        files: ^(kolla_ansible|tools|tests)/.*\.py$
+
+  - repo: https://github.com/PyCQA/flake8
+    rev: 7.0.0
+    hooks:
+      - id: flake8
+        args: ['--max-line-length=100', '--extend-ignore=E203,W503,W504']
+        files: ^(kolla_ansible|tools|tests)/.*\.py$
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.7.6
+    hooks:
+      - id: bandit
+        args: ['-c', '.bandit.yml']
+        files: ^(kolla_ansible|tools)/.*\.py$
+
+  - repo: https://github.com/ansible/ansible-lint
+    rev: v24.2.0
+    hooks:
+      - id: ansible-lint
+        name: Ansible-lint
+        description: This hook runs ansible-lint on ansible files
+        entry: ansible-lint
+        language: python
+        files: \.(ya?ml)$
+        args:
+          - --strict
+          - --profile=production
+        additional_dependencies:
+          - 'ansible-core>=2.17,<2.19'
+          - 'ansible-lint>=24.2.0'
+        # Only check files in ansible directory
+        exclude: |
+          (?x)^(
+              venv/|
+              \.tox/|
+              \.venv/|
+              doc/|
+              releasenotes/|
+              contrib/|
+              tests/
+          )
+
+  - repo: https://github.com/codespell-project/codespell
+    rev: v2.2.6
+    hooks:
+      - id: codespell
+        args:
+          - --ignore-words=.codespell-ignore
+          - --skip="*.min.js,*.min.css,*.svg,venv,*.pyc"
+
+  - repo: local
+    hooks:
+      - id: kolla-ansible-lint-check
+        name: Kolla-Ansible Custom Lint Checks
+        entry: tools/pre-commit-lint-check.sh
+        language: script
+        files: \.(ya?ml)$
+        exclude: |
+          (?x)^(
+              venv/|
+              \.tox/|
+              doc/|
+              releasenotes/
+          )
+
+      - id: check-ansible-task-names
+        name: Check Ansible tasks have names
+        entry: python3 tools/check_task_names.py
+        language: python
+        files: ^ansible/.*\.(ya?ml)$
+        exclude: |
+          (?x)^(
+              ansible/group_vars/|
+              ansible/host_vars/|
+              ansible/inventory/
+          )
+
+# Configuration for specific hooks
+default_language_version:
+  python: python3
+
+# Faster execution with concurrent checks
+default_install_hook_types: [pre-commit, commit-msg]
+default_stages: [commit]
+fail_fast: false

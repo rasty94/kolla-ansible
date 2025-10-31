@@ -1,5 +1,7 @@
 ---
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 # NOTE(yoctozepto): handlers prerequisite
 - import_tasks: lookup_cluster.yml
+  name: "Import lookup_cluster.yml"

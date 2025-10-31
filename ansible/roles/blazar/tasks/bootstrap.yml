@@ -50,3 +50,4 @@
   delegate_to: "{{ groups['blazar-api'][0] }}"
 
 - import_tasks: bootstrap_service.yml
+  name: "Import bootstrap_service.yml"

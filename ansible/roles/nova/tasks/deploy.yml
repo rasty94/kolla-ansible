@@ -1,9 +1,12 @@
 ---
 - import_tasks: register.yml
+  name: "Import register.yml"
 
 - import_tasks: config.yml
+  name: "Import config.yml"
 
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 - name: Flush handlers
   meta: flush_handlers

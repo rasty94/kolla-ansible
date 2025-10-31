@@ -1,18 +1,22 @@
 ---
 - import_tasks: config-host.yml
+  name: "Import config-host.yml"
 
 # Pin release version for rolling upgrades
 # This is only needed when performing a slow rolling upgrade process
 # where you need to maintain compatibility between different versions
 # during the upgrade. For direct version jumps, this section can be skipped.
 - import_tasks: config.yml
+  name: "Import config.yml"
   vars:
     pin_release_version: "{{ ironic_pin_release_version }}"
   when: ironic_pin_release_version | length > 0
 
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 - import_tasks: bootstrap_service.yml
+  name: "Import bootstrap_service.yml"
 
 # TODO(donghm): Flush_handlers to restart ironic services
 # should be run in serial nodes to decrease downtime. Update when
@@ -24,8 +28,10 @@
 
 # Unpin version
 - import_tasks: config.yml
+  name: "Import config.yml"
 
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 # Restart ironic services with unpinned release version
 - name: Flush handlers

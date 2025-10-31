@@ -1,23 +1,31 @@
 ---
 - import_tasks: neutron_plugin_agent_check.yml
+  name: "Import neutron_plugin_agent_check.yml"
 
 - import_tasks: register.yml
+  name: "Import register.yml"
 
 - include_tasks: clone.yml
+  name: "Import clone.yml"
   when: neutron_dev_mode | bool
 
 - import_tasks: config-host.yml
+  name: "Import config-host.yml"
 
 - import_tasks: config.yml
+  name: "Import config.yml"
 
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 - include_tasks: config-neutron-fake.yml
+  name: "Import config-neutron-fake.yml"
   when:
     - enable_nova_fake | bool
     - inventory_hostname in groups['compute']
 
 - import_tasks: bootstrap.yml
+  name: "Import bootstrap.yml"
 
 - name: Flush Handlers
   meta: flush_handlers

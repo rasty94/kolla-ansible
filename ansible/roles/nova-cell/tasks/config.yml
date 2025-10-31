@@ -10,10 +10,12 @@
   with_dict: "{{ nova_cell_services | select_services_enabled_and_mapped_to_host }}"
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - kolla_copy_ca_into_containers | bool
 
 - include_tasks: external_ceph.yml
+  name: "Import external_ceph.yml"
   when:
     - (nova_backend == "rbd" or cinder_backend_ceph | bool)
     - inventory_hostname in groups[nova_cell_compute_group]

@@ -3,4 +3,6 @@
 # databases.
 
 - import_tasks: config_bootstrap.yml
+  name: "Import config_bootstrap.yml"
 - import_tasks: bootstrap_service.yml
+  name: "Import bootstrap_service.yml"

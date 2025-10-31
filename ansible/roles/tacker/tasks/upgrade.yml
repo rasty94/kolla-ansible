@@ -33,10 +33,13 @@
     - inventory_hostname not in tacker_hosts
 
 - import_tasks: config.yml
+  name: "Import config.yml"
 
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 - import_tasks: bootstrap_service.yml
+  name: "Import bootstrap_service.yml"
 
 - name: Flush handlers
   meta: flush_handlers

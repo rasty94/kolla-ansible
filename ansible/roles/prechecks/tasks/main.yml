@@ -1,23 +1,32 @@
 ---
 - import_tasks: inventory_checks.yml
+  name: "Import inventory_checks.yml"
 
 - include_tasks: host_os_checks.yml
+  name: "Import host_os_checks.yml"
   when: prechecks_enable_host_os_checks | bool
 
 - include_tasks: timesync_checks.yml
+  name: "Import timesync_checks.yml"
   when:
     - inventory_hostname not in groups['deployment'] | default([])
 
 - import_tasks: datetime_checks.yml
+  name: "Import datetime_checks.yml"
 
 - include_tasks: port_checks.yml
+  name: "Import port_checks.yml"
   when:
     - inventory_hostname not in groups['deployment'] | default([])
 
 - import_tasks: service_checks.yml
+  name: "Import service_checks.yml"
 
 - import_tasks: package_checks.yml
+  name: "Import package_checks.yml"
 
 - import_tasks: user_checks.yml
+  name: "Import user_checks.yml"
 
 - import_tasks: database_checks.yml
+  name: "Import database_checks.yml"

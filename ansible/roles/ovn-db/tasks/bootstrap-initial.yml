@@ -67,13 +67,16 @@
       when: inventory_hostname in groups.get('ovn-sb-db_had_volume_False', '') and groups['ovn-sb-db_leader'] is defined
 
     - import_tasks: config.yml
+      name: "Import config.yml"
 
     - import_tasks: check-containers.yml
+      name: "Import check-containers.yml"
 
     - name: Flush handlers
       meta: flush_handlers
 
     - import_tasks: bootstrap-db.yml
+      name: "Import bootstrap-db.yml"
 
     - name: Unset bootstrap args fact
       set_fact:

@@ -69,3 +69,4 @@
     - neutron_dns_integration | bool
 
 - import_tasks: neutron_plugin_agent_check.yml
+  name: "Import neutron_plugin_agent_check.yml"

@@ -1,5 +1,6 @@
 ---
 - import_tasks: version-check.yml
+  name: "Import version-check.yml"
 
 - name: Stopping nova cell services
   become: true
@@ -14,3 +15,4 @@
     - nova_safety_upgrade | bool
 
 - import_tasks: rolling_upgrade.yml
+  name: "Import rolling_upgrade.yml"

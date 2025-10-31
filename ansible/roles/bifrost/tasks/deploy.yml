@@ -1,6 +1,9 @@
 ---
 - import_tasks: config.yml
+  name: "Import config.yml"
 
 - import_tasks: start.yml
+  name: "Import start.yml"
 
 - import_tasks: bootstrap.yml
+  name: "Import bootstrap.yml"

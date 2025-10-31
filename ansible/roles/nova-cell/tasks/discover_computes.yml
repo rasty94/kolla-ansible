@@ -3,6 +3,7 @@
 
 - block:
     - import_tasks: get_cell_settings.yml
+      name: "Import get_cell_settings.yml"
 
     - name: Fail if cell settings not found
       fail:

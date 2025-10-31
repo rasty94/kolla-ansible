@@ -1,4 +1,6 @@
 ---
 - import_tasks: validate_docker_execute.yml
+  name: "Import validate_docker_execute.yml"
 
 - import_tasks: prune_images.yml
+  name: "Import prune_images.yml"

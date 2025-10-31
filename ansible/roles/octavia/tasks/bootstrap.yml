@@ -72,3 +72,4 @@
     - not use_preconfigured_databases | bool
 
 - import_tasks: bootstrap_service.yml
+  name: "Import bootstrap_service.yml"

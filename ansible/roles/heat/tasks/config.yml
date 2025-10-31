@@ -29,6 +29,7 @@
     - heat_policy.results
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - heat_copy_certs
 

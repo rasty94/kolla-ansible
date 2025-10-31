@@ -7,3 +7,4 @@
   changed_when: false
 
 - include_tasks: "{{ kolla_action }}.yml"
+  name: "Import {{ kolla_action }}.yml"

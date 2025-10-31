@@ -1,16 +1,22 @@
 ---
 - import_tasks: register.yml
+  name: "Import register.yml"
 
 - import_tasks: config.yml
+  name: "Import config.yml"
 
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 - include_tasks: clone.yml
+  name: "Import clone.yml"
   when: designate_dev_mode | bool
 
 - import_tasks: bootstrap.yml
+  name: "Import bootstrap.yml"
 
 - name: Flush handlers
   meta: flush_handlers
 
 - import_tasks: update_pools.yml
+  name: "Import update_pools.yml"

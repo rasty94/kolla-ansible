@@ -36,6 +36,7 @@
   register: keystone_domain_directory
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - keystone_copy_certs
 
@@ -121,6 +122,7 @@
   with_dict: "{{ keystone_services | select_services_enabled_and_mapped_to_host }}"
 
 - include_tasks: config-federation-oidc.yml
+  name: "Import config-federation-oidc.yml"
   when:
     - keystone_enable_federation_openid | bool
 

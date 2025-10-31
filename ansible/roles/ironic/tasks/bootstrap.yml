@@ -54,3 +54,4 @@
     - inventory_hostname in groups[item.group]
 
 - import_tasks: bootstrap_service.yml
+  name: "Import bootstrap_service.yml"

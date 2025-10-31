@@ -18,6 +18,7 @@
   register: check_extra_ml2_plugins
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - neutron_copy_certs
 

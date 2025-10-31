@@ -10,6 +10,7 @@
   with_dict: "{{ manila_services | select_services_enabled_and_mapped_to_host }}"
 
 - include_tasks: external_ceph.yml
+  name: "Import external_ceph.yml"
   when:
     - (enable_manila_backend_cephfs_native | bool) or (enable_manila_backend_cephfs_nfs | bool)
     - inventory_hostname in groups['manila-share']
@@ -34,6 +35,7 @@
     - manila_policy.results
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - kolla_copy_ca_into_containers | bool
 

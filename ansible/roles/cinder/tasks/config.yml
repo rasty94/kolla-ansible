@@ -10,12 +10,14 @@
   with_dict: "{{ cinder_services | select_services_enabled_and_mapped_to_host }}"
 
 - include_tasks: external_huawei.yml
+  name: "Import external_huawei.yml"
   when:
     - cinder_backend_huawei | bool
     - cinder_backend_huawei_xml_files | length > 0
     - inventory_hostname in groups['cinder-volume']
 
 - include_tasks: external_ceph.yml
+  name: "Import external_ceph.yml"
   when:
     - cinder_backend_ceph | bool
     - inventory_hostname in groups['cinder-volume'] or
@@ -41,6 +43,7 @@
     - cinder_policy.results
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - cinder_copy_certs
 

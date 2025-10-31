@@ -1,17 +1,23 @@
 ---
 - import_tasks: register.yml
+  name: "Import register.yml"
   when: ironic_enable_keystone_integration | bool
 
 - import_tasks: config-host.yml
+  name: "Import config-host.yml"
 
 - import_tasks: config.yml
+  name: "Import config.yml"
 
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 - include_tasks: clone.yml
+  name: "Import clone.yml"
   when: ironic_dev_mode | bool
 
 - import_tasks: bootstrap.yml
+  name: "Import bootstrap.yml"
 
 - name: Flush handlers
   meta: flush_handlers

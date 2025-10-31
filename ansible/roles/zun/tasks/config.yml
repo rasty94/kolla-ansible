@@ -10,6 +10,7 @@
   with_dict: "{{ zun_services | select_services_enabled_and_mapped_to_host }}"
 
 - include_tasks: external_ceph.yml
+  name: "Import external_ceph.yml"
   when:
     - zun_configure_for_cinder_ceph | bool
     - inventory_hostname in groups['zun-compute']
@@ -34,6 +35,7 @@
     - zun_policy.results
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - kolla_copy_ca_into_containers | bool
 

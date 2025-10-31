@@ -1,0 +1,14 @@
+
+============================================================
+ANSIBLE-LINT ISSUES STATISTICS
+============================================================
+
+Total YAML files: 1176
+Files with issues: 736
+
+Issues breakdown:
+  - Unnamed tasks: 997
+  - Command/shell without changed_when: 0
+  - Potential handlers: 536
+
+============================================================

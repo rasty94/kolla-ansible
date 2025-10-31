@@ -1,8 +1,11 @@
 ---
 - import_tasks: neutron_plugin_agent_check.yml
+  name: "Import neutron_plugin_agent_check.yml"
 
 - include_tasks: rolling_upgrade.yml
+  name: "Import rolling_upgrade.yml"
   when: neutron_enable_rolling_upgrade | bool
 
 - include_tasks: legacy_upgrade.yml
+  name: "Import legacy_upgrade.yml"
   when: not neutron_enable_rolling_upgrade | bool

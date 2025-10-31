@@ -1,9 +1,12 @@
 ---
 - import_tasks: config.yml
+  name: "Import config.yml"
 
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 - import_tasks: bootstrap.yml
+  name: "Import bootstrap.yml"
 
 - name: Flush handlers
   meta: flush_handlers

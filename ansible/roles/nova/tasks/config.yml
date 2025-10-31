@@ -42,6 +42,7 @@
     - vendordata_file.stat.exists
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - nova_copy_certs
 

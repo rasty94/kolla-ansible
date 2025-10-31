@@ -29,6 +29,7 @@
     - trove_policy.results
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - trove_copy_certs
 

@@ -43,3 +43,4 @@
   no_log: true
 
 - import_tasks: bootstrap_service.yml
+  name: "Import bootstrap_service.yml"

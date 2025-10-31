@@ -1,4 +1,6 @@
 ---
 - import_tasks: register.yml
+  name: "Import register.yml"
 
 - import_tasks: check.yml
+  name: "Import check.yml"

@@ -14,6 +14,7 @@
     custom_policy: []
 
 - include_tasks: policy_item.yml
+  name: "Import policy_item.yml"
   vars:
     project_name: "{{ item.name }}"
   when: item.enabled | bool
@@ -114,5 +115,6 @@
   with_items: "{{ horizon_custom_themes }}"
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - horizon_copy_certs

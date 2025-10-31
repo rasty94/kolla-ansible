@@ -71,3 +71,4 @@
   when: service | service_enabled_and_mapped_to_host
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"

@@ -19,6 +19,7 @@
 # in proxy_loadbalancer.yml.
 
 - import_tasks: proxy_loadbalancer.yml
+  name: "Import proxy_loadbalancer.yml"
   vars:
     # Default is necessary because this play may not be targeting the hosts in
     # the nova-novncproxy group, and therefore they would not have role
@@ -56,6 +57,7 @@
   tags: always
 
 - import_tasks: proxy_loadbalancer.yml
+  name: "Import proxy_loadbalancer.yml"
   vars:
     # Default is necessary because this play may not be targeting the hosts in
     # the nova-spicehtml5proxy group, and therefore they would not have role
@@ -93,6 +95,7 @@
   tags: always
 
 - import_tasks: proxy_loadbalancer.yml
+  name: "Import proxy_loadbalancer.yml"
   vars:
     # Default is necessary because this play may not be targeting the hosts in
     # the nova-serialproxy group, and therefore they would not have role

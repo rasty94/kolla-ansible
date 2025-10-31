@@ -1,5 +1,6 @@
 ---
 - include_tasks: get_resources_info.yml
+  name: "Import get_resources_info.yml"
   when: octavia_auto_configure | bool
 
 - name: Ensuring config directories exist
@@ -42,6 +43,7 @@
   with_dict: "{{ octavia_services | select_services_enabled_and_mapped_to_host }}"
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - octavia_copy_certs
 

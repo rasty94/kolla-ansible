@@ -1,5 +1,7 @@
 ---
 # Stop the container prior to redeploying it.
 - import_tasks: stop.yml
+  name: "Import stop.yml"
 
 - import_tasks: deploy.yml
+  name: "Import deploy.yml"

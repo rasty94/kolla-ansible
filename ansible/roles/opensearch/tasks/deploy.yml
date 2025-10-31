@@ -1,15 +1,20 @@
 ---
 - import_tasks: config-host.yml
+  name: "Import config-host.yml"
 
 - import_tasks: config.yml
+  name: "Import config.yml"
 
 - import_tasks: check-containers.yml
+  name: "Import check-containers.yml"
 
 - include_tasks: register.yml
+  name: "Import register.yml"
   when: opensearch_enable_keystone_registration | bool
 
 - name: Flush handlers
   meta: flush_handlers
 
 - include_tasks: post-config.yml
+  name: "Import post-config.yml"
   when: opensearch_apply_log_retention_policy | bool

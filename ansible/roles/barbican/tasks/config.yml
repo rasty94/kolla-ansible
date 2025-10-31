@@ -43,6 +43,7 @@
     - barbican_policy.results
 
 - include_tasks: copy-certs.yml
+  name: "Import copy-certs.yml"
   when:
     - barbican_copy_certs
 
