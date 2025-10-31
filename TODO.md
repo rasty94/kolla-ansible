@@ -1,5 +1,43 @@
 # TODO - Recomendaciones para Kolla Ansible
 
+## 🚀 NUEVO: Kolla-Control Web Portal
+
+**Status**: ✅ Estructura inicial creada (31 Oct 2025)
+
+### Descripción
+Portal web moderno para gestión de Kolla-Ansible con integración de Foreman para provisioning de bare metal.
+
+### Ubicación
+`kolla-control/` - Subproyecto dentro del repositorio principal
+
+### Características Implementadas
+- ✅ Backend FastAPI con arquitectura completa
+- ✅ Modelos de base de datos (SQLAlchemy)
+- ✅ API REST endpoints (deployments, operations, inventory)
+- ✅ Wrapper de Kolla-Ansible CLI con streaming
+- ✅ WebSocket support para logs en tiempo real
+- ✅ Docker Compose para desarrollo
+- ✅ Documentación (README + QUICKSTART)
+- ✅ Estructura frontend React/TypeScript
+
+### Próximos Pasos
+- [ ] Implementar frontend React completo
+- [ ] Celery tasks para operaciones asíncronas
+- [ ] Cliente de Foreman API
+- [ ] Integración con Prometheus/Grafana
+- [ ] Autenticación JWT + RBAC
+- [ ] Tests unitarios e integración
+- [ ] CI/CD pipeline
+- [ ] Imágenes Docker para producción
+
+### Referencias
+- README: `kolla-control/README.md`
+- Quick Start: `kolla-control/QUICKSTART.md`
+- Backend: `kolla-control/backend/`
+- Frontend: `kolla-control/frontend/`
+
+---
+
 ## ✅ Completado
 
 ### 1. Seguridad y Autenticación

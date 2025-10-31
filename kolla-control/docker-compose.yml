@@ -1,0 +1,124 @@
+version: '3.8'
+
+services:
+  # MariaDB Database
+  mariadb:
+    image: mariadb:11.6
+    container_name: kolla-control-mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: kolla_control
+      MYSQL_USER: kolla_control
+      MYSQL_PASSWORD: kolla_control_dev
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - kolla-control-network
+
+  # Redis for Celery
+  redis:
+    image: redis:7-alpine
+    container_name: kolla-control-redis
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - kolla-control-network
+
+  # FastAPI Backend
+  backend:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    container_name: kolla-control-backend
+    environment:
+      DATABASE_URL: mysql+aiomysql://kolla_control:kolla_control_dev@mariadb:3306/kolla_control
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: dev-secret-key-change-in-production
+    volumes:
+      - ./backend:/app
+      - /etc/kolla:/etc/kolla:ro
+    ports:
+      - "8000:8000"
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    networks:
+      - kolla-control-network
+
+  # Celery Worker
+  celery-worker:
+    build:
+      context: .
+      dockerfile: docker/backend.Dockerfile
+    container_name: kolla-control-celery
+    environment:
+      DATABASE_URL: mysql+aiomysql://kolla_control:kolla_control_dev@mariadb:3306/kolla_control
+      REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: dev-secret-key-change-in-production
+    volumes:
+      - ./backend:/app
+      - /etc/kolla:/etc/kolla:ro
+    depends_on:
+      mariadb:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    command: celery -A app.core.celery worker --loglevel=info
+    networks:
+      - kolla-control-network
+
+  # Flower (Celery monitoring)
+  flower:
+    build:
+      context: ./backend
+      dockerfile: ../docker/backend.Dockerfile
+    container_name: kolla-control-flower
+    command: celery -A app.tasks.celery_app flower --port=5555
+    ports:
+      - "5555:5555"
+    env_file:
+      - ./backend/.env
+    depends_on:
+      - redis
+      - celery-worker
+    restart: unless-stopped
+
+  # Frontend (React)
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ../docker/frontend.Dockerfile
+    container_name: kolla-control-frontend
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - backend
+
+volumes:
+  mariadb_data:
+    driver: local
+
+networks:
+  kolla-control-network:
+    driver: bridge
