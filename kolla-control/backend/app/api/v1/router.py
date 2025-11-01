@@ -3,11 +3,17 @@ API v1 router
 """
 from fastapi import APIRouter
 
-from app.api.v1.endpoints import deployments, operations, inventory, health
+from app.api.v1.endpoints import deployments, operations, inventory, health, config, auth
 
 api_router = APIRouter()
 
 # Include routers
+api_router.include_router(
+    auth.router,
+    prefix="/auth",
+    tags=["authentication"],
+)
+
 api_router.include_router(
     health.router,
     tags=["health"],
@@ -29,4 +35,10 @@ api_router.include_router(
     inventory.router,
     prefix="/inventory",
     tags=["inventory"],
+)
+
+api_router.include_router(
+    config.router,
+    prefix="/config",
+    tags=["config"],
 )

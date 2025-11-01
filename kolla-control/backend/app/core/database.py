@@ -11,22 +11,6 @@ from sqlalchemy.orm import declarative_base
 
 from app.core.config import settings
 
-# Create async engine for MariaDB
-engine = create_async_engine(
-    settings.DATABASE_URL,
-    echo=settings.DEBUG,
-    pool_pre_ping=True,
-    pool_size=settings.DB_POOL_SIZE,
-    max_overflow=settings.DB_MAX_OVERFLOW,
-    pool_recycle=3600,  # Recycle connections after 1 hour for MariaDB
-)
-from typing import AsyncGenerator
-
-from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
-from sqlalchemy.orm import declarative_base
-
-from app.core.config import settings
-
 # Create async engine
 engine = create_async_engine(
     settings.DATABASE_URL,
