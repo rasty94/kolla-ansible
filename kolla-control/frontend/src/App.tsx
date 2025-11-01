@@ -12,7 +12,7 @@ import Dashboard from './pages/Dashboard';
 import { 
   DeploymentWizard, 
   InventoryManager, 
-  Operations, 
+  OperationsPanel, 
   Logs, 
   ConfigEditor 
 } from './pages';
@@ -47,7 +47,7 @@ const App: React.FC = () => {
                   <Route path="dashboard" element={<Dashboard />} />
                   <Route path="deploy/*" element={<DeploymentWizard />} />
                   <Route path="inventory" element={<InventoryManager />} />
-                  <Route path="operations" element={<Operations />} />
+                  <Route path="operations" element={<OperationsPanel />} />
                   <Route path="logs" element={<Logs />} />
                   <Route path="config" element={<ConfigEditor />} />
                   <Route path="*" element={<NotFound />} />
