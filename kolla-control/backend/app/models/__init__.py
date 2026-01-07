@@ -9,6 +9,7 @@ from app.models.models import (
     OperationType,
     User,
     AuditLog,
+    Environment,
 )
 
 __all__ = [
@@ -19,4 +20,5 @@ __all__ = [
     "OperationType",
     "User",
     "AuditLog",
+    "Environment",
 ]

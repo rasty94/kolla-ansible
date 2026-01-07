@@ -116,7 +116,7 @@ class Operation(Base):
     created_by = Column(String(255), nullable=True)
     
     # Relationships
-    deployment = relationship("Operation", back_populates="operations")
+    deployment = relationship("Deployment", back_populates="operations")
 
 
 class User(Base):
@@ -160,3 +160,34 @@ class AuditLog(Base):
     
     # Metadata
     created_at = Column(DateTime, default=datetime.utcnow, index=True)
+
+
+class Environment(Base):
+    """Environment model (Multi-tenancy)"""
+    __tablename__ = "environments"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String(255), unique=True, nullable=False, index=True)
+    description = Column(Text, nullable=True)
+    
+    # Paths
+    config_path = Column(String(512), nullable=False)  # e.g. /etc/kolla/env_1
+    inventory_path = Column(String(512), nullable=False)  # e.g. /etc/kolla/env_1/inventory
+    
+    # Metadata
+    created_at = Column(DateTime, default=datetime.utcnow)
+    updated_at = Column(DateTime, default=datetime.utcnow, onupdate=datetime.utcnow)
+    
+    # Relationships
+    hosts = relationship("Host", back_populates="environment", cascade="all, delete-orphan")
+    deployments = relationship("Deployment", back_populates="environment", cascade="all, delete-orphan")
+
+
+# Update Host model relationships
+Host.environment_id = Column(Integer, ForeignKey("environments.id"), nullable=True)
+Host.environment = relationship("Environment", back_populates="hosts")
+
+# Update Deployment model relationships
+Deployment.environment_id = Column(Integer, ForeignKey("environments.id"), nullable=True)
+Deployment.environment = relationship("Environment", back_populates="deployments")
+

@@ -103,6 +103,7 @@ class KollaAnsibleService:
         limit: Optional[str] = None,
         verbose: int = 0,
         on_output: Optional[Callable[[str], None]] = None,
+        environment_id: Optional[int] = None,
     ) -> Dict[str, any]:
         """
         Execute kolla-ansible command asynchronously
@@ -116,6 +117,7 @@ class KollaAnsibleService:
             limit: Limit execution to specific hosts
             verbose: Verbosity level (0-3)
             on_output: Callback function called for each output line
+            environment_id: ID of the environment context
         
         Returns:
             Dictionary with return_code, stdout, stderr
@@ -123,9 +125,19 @@ class KollaAnsibleService:
         Raises:
             KollaAnsibleError: If command execution fails
         """
+        # Determine paths based on environment
+        config_path = self.config_path
+        inventory_path = inventory or self.inventory_path
+        
+        if environment_id:
+            # TODO: Fetch environment paths from DB or cache
+            # For now, assuming a convention based on ID
+            # In a real implementation, this service should have access to the DB or receive the paths directly
+            pass
+
         cmd = self._build_command(
             operation=operation,
-            inventory=inventory,
+            inventory=inventory_path,
             extra_vars=extra_vars,
             tags=tags,
             skip_tags=skip_tags,
@@ -143,7 +155,7 @@ class KollaAnsibleService:
             cwd=self.kolla_ansible_path,
             env={
                 **subprocess.os.environ,
-                "KOLLA_CONFIG_PATH": self.config_path,
+                "KOLLA_CONFIG_PATH": config_path,
             },
         )
         

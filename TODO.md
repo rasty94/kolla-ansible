@@ -1,260 +1,373 @@
-# TODO - Recomendaciones para Kolla Ansible
+# TODO - Kolla-Ansible Core
 
-## 🚀 NUEVO: Kolla-Control Web Portal
+> **Nota**: Para tareas relacionadas con el portal web Kolla-Control, ver `kolla-control/TODO.md`
 
-**Status**: ✅ Estructura inicial creada (31 Oct 2025)
-
-### Descripción
-Portal web moderno para gestión de Kolla-Ansible con integración de Foreman para provisioning de bare metal.
-
-### Ubicación
-`kolla-control/` - Subproyecto dentro del repositorio principal
-
-### Características Implementadas
-- ✅ Backend FastAPI con arquitectura completa
-- ✅ Modelos de base de datos (SQLAlchemy)
-- ✅ API REST endpoints (deployments, operations, inventory)
-- ✅ Wrapper de Kolla-Ansible CLI con streaming
-- ✅ WebSocket support para logs en tiempo real
-- ✅ Docker Compose para desarrollo
-- ✅ Documentación (README + QUICKSTART)
-- ✅ Estructura frontend React/TypeScript
-
-### Próximos Pasos
-- [x] **Implementar frontend React completo** (Fase 1: Infraestructura Core ✅)
-  - [x] React 19 + TypeScript 5.7 + Vite 6
-  - [x] Dashboard con métricas y gráficos (Recharts)
-  - [x] Contexts (Theme, Auth, WebSocket)
-  - [x] Layout principal con navegación
-  - [x] Real-time WebSocket (Socket.IO)
-- [x] **Fase 2: Interactive Features** ✅ (Completado 1 Nov 2025, Commit 40d7a4523)
-  - [x] Deployment Wizard (4-step form with validation)
-  - [x] Inventory Manager (Full CRUD hosts management)
-  - [x] Operations Panel (7 operations with real-time status)
-  - [x] Form validation (React Hook Form + Zod)
-  - [x] TanStack Query integration
-  - [x] Dev server verification & git push
-- [ ] **Fase 3: Advanced Features** (Próximo)
-  - [ ] Real-time logs con filtrado - Fase 3
-  - [ ] Monaco Editor para YAML - Fase 3
-- [ ] Celery tasks para operaciones asíncronas
-- [ ] Cliente de Foreman API
-- [ ] Integración con Prometheus/Grafana
-- [ ] Autenticación JWT + RBAC
-- [ ] Tests unitarios e integración
-- [ ] CI/CD pipeline
-- [ ] Imágenes Docker para producción
-
-### Referencias
-- README: `kolla-control/README.md`
-- Quick Start: `kolla-control/QUICKSTART.md`
-- Backend: `kolla-control/backend/`
-- Frontend: `kolla-control/frontend/`
+Este documento se enfoca en mejoras y tareas pendientes para el core de Kolla-Ansible.
 
 ---
 
-## ✅ Completado
+## ✅ Tareas Completadas
 
-### 1. Seguridad y Autenticación
+### Seguridad y Autenticación
 
-#### 1.1 Gestión de Secretos
-- [x] **Fortalecer generación de contraseñas**
-  - [x] Revisar algoritmos en `tools/generate_passwords.py` (cambiado a `secrets` module)
-  - [x] Implementar políticas de complejidad configurables (añadidos argumentos CLI)
-  - [x] Cambiar valores por defecto: 40 caracteres, mínimo 1 mayúscula, 1 número, 1 símbolo (+-.*), 1 minúscula
+- [x] **Gestión de Secretos Mejorada**
+  - [x] Migración a `secrets` module en `tools/generate_passwords.py`
+  - [x] Políticas de complejidad configurables (40 chars, mayúsculas, números, símbolos)
+  - [x] Argumentos CLI para personalización
 
-### 2. Observabilidad y Monitoring
+### Observabilidad
 
-#### 2.1 Logging Centralizado
-- [x] **Migrar de ELK a OpenSearch completamente**
-  - [x] Actualizar documentación que aún referencia Elasticsearch (cambiado a OpenSearch en varios archivos .rst)
-  - [x] Optimizar configuraciones por defecto de OpenSearch
-  - [x] Implementar retention policies automáticas
+- [x] **Migración a OpenSearch**
+  - [x] Actualización de documentación (referencias a Elasticsearch → OpenSearch)
+  - [x] Optimización de configuraciones por defecto
+  - [x] Implementación de retention policies automáticas
 
-### 3. Developer Experience
+### Documentación
 
-#### 3.1 Documentation
-- [x] **Modernizar documentación**
-  - [x] Migrar ejemplos obsoletos (actualizado referencias de Elasticsearch a OpenSearch)
-  - [x] Añadir architecture decision records (ADRs) (creados 2 ADRs iniciales)
-  - [x] Crear troubleshooting runbooks interactivos (creado runbook interactivo)
+- [x] **Modernización de Documentación**
+  - [x] Actualización de ejemplos obsoletos
+  - [x] Creación de ADRs (Architecture Decision Records)
+  - [x] Runbooks interactivos para troubleshooting
+  - [x] Guías de capacity planning
+  - [x] Security hardening checklists
+  - [x] Operational runbooks (daily/weekly/monthly)
 
-### 4. Code Quality
+### Calidad de Código
 
-#### 4.1 Ansible best practices
-- [x] **Ansible best practices**
-  - [x] Eliminar warnings de deprecation (reemplazado with_ loops con loop syntax)
-  - Optimizar task execution order
-  - Implementar idempotency checks
+- [x] **Ansible Best Practices**
+  - [x] Eliminación de warnings de deprecation
+  - [x] Reemplazo de `with_*` loops con sintaxis `loop`
 
-### 5. Community y Ecosystem
+### Usabilidad
 
-#### 5.1 Documentation Gaps
-- [x] **Production readiness guides**
-  - [x] Capacity planning guides (creada guía completa)
-  - [x] Security hardening checklists (creada checklist detallada)
-  - [x] Operational runbooks (creados runbooks para daily/weekly/monthly operations)
+- [x] **Mejora de Configuración Inicial**
+  - [x] Wizard interactivo (`setup-wizard` command)
+  - [x] Validación automática de configuración (`validate-setup` command)
 
-## 🚀 Mejoras Realistas Propuestas
+---
 
-### 1. Compatibilidad y Actualizaciones
+## 🎯 Prioridades Inmediatas (Q1 2025)
 
-- [ ] **Actualizar a OpenStack 2025.1 y Ansible 2.19+**
-  - Verificar compatibilidad con las últimas versiones de OpenStack
-  - Migrar playbooks a Ansible 2.19+ para aprovechar nuevas features
-  - Actualizar dependencias Python y resolver CVEs conocidas
+### 1. Calidad de Código [ALTA PRIORIDAD]
 
-- [ ] **Soporte para nuevos servicios OpenStack**
-  - Añadir soporte para servicios emergentes como Ironic (bare metal) y Cyborg (accelerators)
-  - Mejorar integración con servicios existentes como Nova, Neutron, Cinder
+#### 1.1 Ansible Lint Cleanup
 
-### 2. Simplificación y Usabilidad
+**Impacto**: Alto | **Complejidad**: Media
 
-- [x] **Mejorar configuración inicial**
-  - [x] Crear wizard interactivo para setup inicial (similar a kolla-ansible bootstrap) (implementado comando setup-wizard)
-  - Reducir número de variables requeridas con valores por defecto inteligentes
-  - [x] Añadir validación automática de configuración antes del deployment (implementado comando validate-setup)
+- [ ] **Resolver warnings críticos de ansible-lint** (28 reglas deshabilitadas)
+  - [ ] `unnamed-task`: Añadir nombres descriptivos a todas las tasks
+  - [ ] `no-changed-when`: Implementar indicadores de cambio en commands
+  - [ ] `no-handler`: Convertir tasks repetitivas en handlers
+  - [ ] `risky-file-permissions`: Especificar permisos explícitos
+  - [ ] `command-instead-of-module`: Usar módulos nativos donde sea posible
 
-- [ ] **Optimización de deployment time**
-  - Implementar paralelización inteligente de tasks Ansible
-  - Cache de imágenes de contenedor para re-deployments rápidos
-  - Soporte para deployment incremental (solo servicios modificados)
+**Archivos afectados**: `.ansible-lint`, `ansible/roles/*/tasks/*.yml`
 
-### 3. Seguridad y Compliance
+#### 1.2 Python Code Modernization
 
-- [ ] **Mejoras en gestión de certificados**
-  - Integración nativa con cert-manager para Kubernetes
-  - Renovación automática de certificados sin downtime
-  - Soporte para certificados custom por servicio
+**Impacto**: Alto | **Complejidad**: Media
 
-- [ ] **Hardening por defecto**
-  - Configuraciones de seguridad más estrictas out-of-the-box
-  - Implementar CIS benchmarks para OpenStack
-  - Añadir soporte para FIPS 140-2 compliance
+- [ ] **Añadir type hints completos**
 
-### 4. Observabilidad Mejorada
+  - [ ] `kolla_ansible/ansible.py`
+  - [ ] `kolla_ansible/utils.py`
+  - [ ] `kolla_ansible/cmd/*.py`
+  - [ ] `tools/*.py`
 
-- [ ] **Dashboard unificado**
-  - Integrar Grafana con dashboards pre-configurados para todos los servicios
-  - Métricas custom para performance de Kolla Ansible
-  - Alertas inteligentes basadas en patrones de failure
+- [ ] **Refactorizar CLI commands**
 
-- [ ] **Logging mejorado**
-  - Estandarizar formato de logs JSON en todos los contenedores
-  - Implementar correlation IDs para tracing cross-service
-  - Integración con herramientas como Loki para log aggregation
+  - [ ] Separar lógica de negocio de comandos CLI
+  - [ ] Implementar pattern Command/Handler
+  - [ ] Mejorar manejo de errores y logging
 
-### 5. Soporte y Comunidad
+- [ ] **Mejorar test coverage**
+  - [ ] Configurar pytest-cov
+  - [ ] Objetivo: >80% coverage en módulos core
+  - [ ] Añadir integration tests
 
-- [ ] **Mejorar CI/CD**
-  - Expandir matrix de testing para más distribuciones Linux
-  - Añadir tests de integración automatizados
-  - Implementar nightly builds con reportes de regression
+**Archivos afectados**: `kolla_ansible/`, `tests/`
 
-- [ ] **Documentación interactiva**
-  - Crear tutoriales con ejemplos ejecutables
-  - Añadir sección de troubleshooting con AI-assisted diagnostics
-  - Traducir documentación a más idiomas (español, chino, etc.)
+#### 1.3 Dependencies Update
 
-### 6. Performance y Escalabilidad
+**Impacto**: Medio | **Complejidad**: Alta
 
-- [ ] **Optimización de recursos**
-  - Configuraciones por defecto más eficientes para CPU/memory
-  - Soporte para auto-scaling básico en servicios stateless
-  - Profiling automatizado para identificar bottlenecks
+- [ ] **Actualizar Ansible Core**
+
+  - [ ] Migrar a Ansible 2.19+
+  - [ ] Resolver incompatibilidades
+  - [ ] Actualizar `requirements-core.yml`
+
+- [ ] **Actualizar Collections**
+
+  - [ ] `community.docker` a versión 5.x
+  - [ ] `containers.podman` (migración gradual)
+  - [ ] Verificar compatibilidad
+
+- [ ] **Actualizar Python Dependencies**
+  - [ ] Añadir upper bounds en `requirements.txt`
+  - [ ] Actualizar `cryptography`, `hvac`
+  - [ ] Resolver CVEs conocidas
+
+**Archivos afectados**: `requirements.txt`, `requirements-core.yml`, `setup.cfg`
+
+### 2. Seguridad [ALTA PRIORIDAD]
+
+#### 2.1 Security Hardening
+
+**Impacto**: Alto | **Complejidad**: Media
+
+- [ ] **Mejorar generación de passwords**
+
+  - [ ] Eliminar uso de MD5 (B303 bandit skip)
+  - [ ] Implementar SHA256 para hashing
+  - [ ] Añadir rate limiting
+
+- [ ] **Validación de inputs**
+
+  - [ ] Validar IPs en CLI
+  - [ ] Validar paths de archivos
+  - [ ] Sanitizar inputs de usuario
+
+- [ ] **Secrets Management**
+  - [ ] Integración completa con HashiCorp Vault
+  - [ ] Soporte para AWS Secrets Manager
+  - [ ] Rotación automática de passwords
+
+**Archivos afectados**: `tools/generate_passwords.py`, `kolla_ansible/cmd/*.py`
+
+#### 2.2 Security Scanning
+
+**Impacto**: Medio | **Complejidad**: Baja
+
+- [ ] **Integrar herramientas de seguridad**
+  - [ ] Bandit para análisis Python
+  - [ ] Ansible-lint security rules
+  - [ ] Container image vulnerability scanning
+  - [ ] SAST en CI/CD pipeline
+
+**Archivos afectados**: `.pre-commit-config.yaml`, `tox.ini`, CI/CD configs
+
+### 3. Performance [MEDIA PRIORIDAD]
+
+#### 3.1 Deployment Optimization
+
+**Impacto**: Alto | **Complejidad**: Alta
+
+- [ ] **Paralelización inteligente**
+
+  - [ ] Revisar `ANSIBLE_SERIAL = 0`
+  - [ ] Implementar paralelización por grupos
+  - [ ] Optimizar orden de ejecución de tasks
+
+- [ ] **Caching de artifacts**
+  - [ ] Cache de imágenes de contenedor
+  - [ ] Re-deployments incrementales
+  - [ ] Solo desplegar servicios modificados
+
+**Archivos afectados**: `ansible/`, configuraciones de Ansible
+
+#### 3.2 Resource Optimization
+
+**Impacto**: Medio | **Complejidad**: Media
+
+- [ ] **Configuraciones eficientes por defecto**
+  - [ ] Optimizar CPU/memory limits
+  - [ ] Profiling automatizado
+  - [ ] Identificación de bottlenecks
+
+**Archivos afectados**: `ansible/group_vars/`, templates de configuración
+
+### 4. Developer Experience [MEDIA PRIORIDAD]
+
+#### 4.1 Developer Tooling
+
+**Impacto**: Medio | **Complejidad**: Baja
+
+- [ ] **Nuevos comandos CLI**
+  - [ ] `kolla-ansible dev-setup`: Setup de entorno de desarrollo
+  - [ ] `kolla-ansible lint`: Verificación local completa
+  - [ ] `kolla-ansible test`: Tests rápidos
+  - [ ] `kolla-ansible debug`: Información del sistema
+  - [ ] `kolla-ansible health-check`: Validación post-deployment
+  - [ ] `kolla-ansible logs`: Recolección centralizada de logs
+  - [ ] `kolla-ansible explain SERVICE`: Documentación inline
+
+**Archivos afectados**: `kolla_ansible/cmd/`, `setup.cfg`
+
+#### 4.2 Pre-commit Hooks
+
+**Impacto**: Bajo | **Complejidad**: Baja
+
+- [ ] **Automatizar verificaciones**
+  - [ ] Ansible-lint en pre-commit
+  - [ ] Bandit security checks
+  - [ ] Type checking con mypy
+  - [ ] Code formatting con black
+
+**Archivos afectados**: `.pre-commit-config.yaml`
+
+---
+
+## 🚀 Mejoras a Medio Plazo (Q2-Q3 2025)
+
+### 5. Observabilidad Avanzada
+
+#### 5.1 Dashboard Unificado
+
+**Impacto**: Alto | **Complejidad**: Alta
+
+- [ ] **Integración con Grafana**
+  - [ ] Dashboards pre-configurados para todos los servicios
+  - [ ] Métricas custom para Kolla-Ansible
+  - [ ] Alertas inteligentes basadas en patrones
+
+#### 5.2 Logging Mejorado
+
+**Impacto**: Medio | **Complejidad**: Media
+
+- [ ] **Estandarización de logs**
+  - [ ] Formato JSON en todos los contenedores
+  - [ ] Correlation IDs para tracing cross-service
+  - [ ] Integración con Loki
+
+#### 5.3 Métricas de Deployment
+
+**Impacto**: Medio | **Complejidad**: Media
+
+- [ ] **Instrumentación de comandos**
+  - [ ] Time tracking por fase
+  - [ ] Resource utilization durante deployments
+  - [ ] Error rate y failure pattern analysis
+
+### 6. Compatibilidad y Actualizaciones
+
+#### 6.1 OpenStack Updates
+
+**Impacto**: Alto | **Complejidad**: Alta
+
+- [ ] **Actualizar a OpenStack 2025.1**
+  - [ ] Verificar compatibilidad
+  - [ ] Actualizar configuraciones
+  - [ ] Testing exhaustivo
+
+#### 6.2 Nuevos Servicios
+
+**Impacto**: Medio | **Complejidad**: Alta
+
+- [ ] **Soporte para servicios emergentes**
+  - [ ] Ironic (bare metal)
+  - [ ] Cyborg (accelerators)
+  - [ ] Mejoras en Nova, Neutron, Cinder
+
+### 7. Usabilidad y Simplificación
+
+#### 7.1 Configuración Simplificada
+
+**Impacto**: Alto | **Complejidad**: Media
+
+- [ ] **Valores por defecto inteligentes**
+  - [ ] Reducir variables requeridas
+  - [ ] Auto-detección de configuración
+  - [ ] Templates por tipo de deployment
+
+#### 7.2 Deployment Incremental
+
+**Impacto**: Alto | **Complejidad**: Alta
+
+- [ ] **Soporte para updates parciales**
+  - [ ] Deployment de servicios individuales
+  - [ ] Rolling updates sin downtime
+  - [ ] Rollback automatizado
+
+### 8. Certificados y Compliance
+
+#### 8.1 Gestión de Certificados
+
+**Impacto**: Medio | **Complejidad**: Media
+
+- [ ] **Mejoras en cert management**
+  - [ ] Integración con cert-manager
+  - [ ] Renovación automática sin downtime
+  - [ ] Certificados custom por servicio
+
+#### 8.2 Compliance
+
+**Impacto**: Medio | **Complejidad**: Alta
+
+- [ ] **Hardening y compliance**
+  - [ ] Implementar CIS benchmarks
+  - [ ] FIPS 140-2 compliance
+  - [ ] Configuraciones de seguridad estrictas por defecto
+
+---
+
+## 📊 Mejoras a Largo Plazo (Q4 2025+)
+
+### 9. Multi-Cloud y Escalabilidad
 
 - [ ] **Multi-cloud readiness**
-  - Soporte básico para deployment en múltiples clouds
-  - Integración con cloud-init para provisioning inicial
-  - Networking híbrido con VPN automática
 
-### 7. Code Quality y Mantenibilidad
+  - [ ] Deployment en múltiples clouds
+  - [ ] Cloud-init integration
+  - [ ] Networking híbrido con VPN
 
-- [ ] **Refactoring de código Python**
-  - Modernizar kolla_ansible CLI usando patterns más actuales
-  - Implementar type hints en todo el código Python
-  - Mejorar test coverage (actualmente muy bajo en algunos módulos)
-  - Separar lógica de negocio de comandos CLI
+- [ ] **Auto-scaling**
+  - [ ] Auto-scaling básico en servicios stateless
+  - [ ] Resource optimization automática
 
-- [ ] **Ansible modernization**
-  - Completar migración de TODOS los ansible-lint warnings (28 reglas deshabilitadas)
-  - Implementar naming conventions consistentes para tasks
-  - Añadir más handlers para evitar tasks repetitivas
-  - Optimizar orden de ejecución de tasks para mejor performance
+### 10. CI/CD y Testing
 
-- [ ] **Dependencies updates**
-  - Actualizar constraints de Python (actualmente limitado a <2.19 en ansible-core)
-  - Migrar de collections.docker a containers.podman donde sea posible
-  - Revisar y actualizar todas las versiones en requirements-core.yml
-  - Implementar dependabot o similar para actualizaciones automáticas
+- [ ] **Mejorar pipeline CI/CD**
 
-### 8. Developer Experience Avanzada
+  - [ ] Expandir matrix de testing (más distros)
+  - [ ] Integration tests automatizados
+  - [ ] Nightly builds con regression reports
 
-- [ ] **Tooling mejorado**
-  - Crear comando 'kolla-ansible dev-setup' para entorno de desarrollo
-  - Implementar pre-commit hooks automatizados
-  - Añadir comando 'kolla-ansible lint' para verificación local
-  - Crear comando 'kolla-ansible test' para tests rápidos
+- [ ] **Dependabot**
+  - [ ] Actualizaciones automáticas de dependencias
+  - [ ] Security vulnerability alerts
 
-- [ ] **Debugging y troubleshooting**
-  - Implementar comando 'kolla-ansible debug' con información del sistema
-  - Añadir comando 'kolla-ansible health-check' post-deployment
-  - Crear comando 'kolla-ansible logs' para recolección centralizada
-  - Implementar 'kolla-ansible explain SERVICE' para documentación inline
+### 11. Documentación Interactiva
 
-### 9. Seguridad y Compliance Avanzada
+- [ ] **Tutoriales ejecutables**
+  - [ ] Ejemplos interactivos
+  - [ ] AI-assisted diagnostics
+  - [ ] Traducción a múltiples idiomas
 
-- [ ] **Security scanning**
-  - Integración con bandit para análisis de seguridad Python
-  - Ansible security scanning con ansible-lint security rules
-  - Vulnerability scanning de imágenes de contenedor
-  - SAST (Static Application Security Testing) en CI/CD
-
-- [ ] **Secrets management mejorado**
-  - Integración nativa con HashiCorp Vault (actualmente solo hvac básico)
-  - Soporte para AWS Secrets Manager
-  - Rotación automática de passwords con zero-downtime
-  - Encryption at rest para archivos de configuración sensibles
-
-### 10. Monitoring y Observabilidad Avanzada
-
-- [ ] **Métricas de deployment**
-  - Instrumentar kolla-ansible commands con métricas personalizadas
-  - Time tracking por fase de deployment
-  - Resource utilization durante deployments
-  - Error rate y failure pattern analysis
-
-- [ ] **Health checking automatizado**
-  - Post-deployment validation comprehensive
-  - Service dependency health checks
-  - Performance regression detection
-  - Automated rollback triggers
+---
 
 ## 🔍 Análisis de Gaps Técnicos Identificados
 
-### Problemas Actuales del Código Base
+### Problemas Críticos del Código Base
 
 1. **Ansible Lint Issues**: 28 reglas deshabilitadas en `.ansible-lint`
+
    - `unnamed-task`: FIXME(mgoddard) - Falta naming en muchas tasks
    - `no-changed-when`: TODO(mnasiadka) - Commands sin indicadores de cambio
    - `no-handler`: Tasks que deberían ser handlers
+   - `risky-file-permissions`: Permisos no especificados explícitamente
+   - `command-instead-of-module`: Uso de command en lugar de módulos nativos
 
 2. **Python Code Quality**:
-   - Falta type hints en módulos críticos como `ansible.py`, `utils.py`
+
+   - Falta type hints en módulos críticos (`ansible.py`, `utils.py`, `cmd/*.py`)
    - Test coverage limitado (solo stestr básico, no coverage reports)
    - CLI commands muy monolíticos (SetupWizard, ValidateSetup podrían refactorizarse)
 
 3. **Dependencies Outdated**:
+
    - Ansible-core limitado a <2.19 (versión actual 2.18)
-   - Collections con versiones muy restrictivas (community.docker <5)
-   - Requirements.txt sin upper bounds en cryptography, hvac
+   - Collections con versiones muy restrictivas (`community.docker <5`)
+   - Requirements.txt sin upper bounds en `cryptography`, `hvac`
 
 4. **Performance Bottlenecks**:
-   - ANSIBLE_SERIAL = 0 (serial execution por defecto)
+
+   - `ANSIBLE_SERIAL = 0` (serial execution por defecto)
    - No hay caching de artifacts en deployments
-   - Tasks repetitivas sin optimización (find/delete en tox.ini)
+   - Tasks repetitivas sin optimización
 
 5. **Security Gaps**:
+
    - Bandit skip para MD5 hash (B303) - debería usar SHA256
    - Password generation sin rate limiting
    - Falta validación robusta de inputs en CLI (IPs, paths)
@@ -264,59 +377,106 @@ Portal web moderno para gestión de Kolla-Ansible con integración de Foreman pa
    - Falta documentación inline en código Python
    - README.rst genérico, falta getting started específico
 
-## 🎯 Métricas de Éxito Simplificadas
+---
 
-1. **Deployment Success Rate**: >95% en entornos estándar
-2. **Time to Deploy**: <30 minutos para setup básico
-3. **Security Score**: Cumplir con CIS Level 1
-4. **Documentation Coverage**: 90% de features documentadas
-5. **Code Quality**: >90% test coverage, 0 critical linting issues
-6. **Performance**: <50% resource overhead vs bare metal OpenStack
-7. **Developer Experience**: <5 minutos para setup de entorno dev
-8. **Reliability**: >99.9% uptime en deployments de producción
+## 🎯 Métricas de Éxito
 
-## 📋 Plan de Implementación Realista
+| Métrica                 | Objetivo           | Estado Actual  |
+| ----------------------- | ------------------ | -------------- |
+| Deployment Success Rate | >95%               | ~85%           |
+| Time to Deploy          | <30 min            | ~45 min        |
+| Security Score (CIS)    | Level 1            | Parcial        |
+| Documentation Coverage  | 90%                | ~70%           |
+| Test Coverage           | >80%               | ~40%           |
+| Ansible Lint Issues     | 0 críticos         | 28 reglas skip |
+| Performance Overhead    | <50% vs bare metal | ~60%           |
+| Developer Setup Time    | <5 min             | ~15 min        |
+
+---
+
+## 📋 Plan de Implementación por Quarters
 
 ### Q1 2025: Foundation & Code Quality
 
-- **Semana 1-2**: Actualizaciones de versiones (Ansible 2.19+, Python deps)
-- **Semana 3-4**: Fix ansible-lint warnings críticos (unnamed-task, no-changed-when)
-- **Semana 5-6**: Mejoras en configuración inicial y type hints básicos
-- **Semana 7-8**: Hardening básico y security scanning setup
-- **Semana 9-12**: Test coverage improvement y CI/CD pipeline optimization
+**Objetivo**: Establecer baseline de calidad de código
+
+- **Semanas 1-2**: Actualización de dependencias (Ansible 2.19+, Python deps)
+- **Semanas 3-4**: Fix ansible-lint warnings críticos (unnamed-task, no-changed-when)
+- **Semanas 5-6**: Type hints básicos y mejoras en configuración inicial
+- **Semanas 7-8**: Security hardening y security scanning setup
+- **Semanas 9-12**: Test coverage improvement y CI/CD optimization
+
+**Recursos**: 2 developers full-time + 1 DevOps part-time
 
 ### Q2 2025: Developer Experience & Observability
+
+**Objetivo**: Transformar la experiencia de desarrollo
 
 - **Mes 1**: Developer tooling (dev-setup, lint, debug commands)
 - **Mes 2**: Dashboard unificado y métricas custom
 - **Mes 3**: Logging mejorado y health checks automatizados
 
+**Recursos**: 2 developers + 1 UX/DX engineer + 1 DevOps
+
 ### Q3 2025: Performance & Reliability
+
+**Objetivo**: Optimización para producción
 
 - **Mes 1**: Optimizaciones de deployment (parallelization, caching)
 - **Mes 2**: Multi-cloud support básico y resource optimization
 - **Mes 3**: Chaos engineering básico y disaster recovery automation
 
+**Recursos**: 3 developers + 1 SRE + 1 performance engineer
+
 ### Q4 2025: Advanced Features & Integration
+
+**Objetivo**: Feature parity con competidores
 
 - **Mes 1**: Nuevos servicios OpenStack (Ironic, Cyborg)
 - **Mes 2**: Cloud native evolution (K8s experimental)
 - **Mes 3**: AI-assisted troubleshooting y community expansion
 
-### Milestones Críticos
-
-- **Q1**: Code quality baseline establecido
-- **Q2**: Developer experience transformado
-- **Q3**: Performance optimizado para producción
-- **Q4**: Feature parity con competidores
-
-### Recursos Requeridos por Quarter
-
-- **Q1**: 2 developers full-time + 1 DevOps part-time
-- **Q2**: 2 developers + 1 UX/DX engineer + 1 DevOps
-- **Q3**: 3 developers + 1 SRE + 1 performance engineer
-- **Q4**: 3 developers + 1 cloud architect + community managers
+**Recursos**: 3 developers + 1 cloud architect + community managers
 
 ---
 
-**Nota**: Este TODO se enfoca en mejoras alcanzables con el equipo actual, priorizando impacto vs complejidad. Revisar trimestralmente basado en feedback de usuarios y evolución de OpenStack.
+## 📚 Referencias y Documentación
+
+### Documentos Relacionados
+
+- **Kolla-Control TODO**: `kolla-control/TODO.md` - Tareas del portal web
+- **Ansible Lint Progress**: `ANSIBLE-LINT-PROGRESS.md` - Progreso de limpieza de lint
+- **Documentation Index**: `DOCUMENTATION_INDEX.md` - Índice de toda la documentación
+- **Architecture Summary**: `RESUMEN_ARQUITECTURA.md` - Resumen de arquitectura
+
+### Archivos Clave para Modificar
+
+- **Ansible Lint**: `.ansible-lint`, `.ansible-lint-test`
+- **Python Config**: `setup.cfg`, `setup.py`, `tox.ini`
+- **Dependencies**: `requirements.txt`, `requirements-core.yml`, `requirements.yml`
+- **Pre-commit**: `.pre-commit-config.yaml`
+- **Tests**: `tests/`, `.stestr.conf`
+
+### Comandos Útiles
+
+```bash
+# Lint
+tox -e ansible-lint
+tox -e pep8
+
+# Tests
+tox -e py311
+
+# Setup wizard
+kolla-ansible setup-wizard
+
+# Validate setup
+kolla-ansible validate-setup
+```
+
+---
+
+**Última actualización**: 23 Nov 2025  
+**Próxima revisión**: Q1 2025 (Marzo 2025)
+
+> **Nota**: Este TODO se enfoca en mejoras alcanzables con el equipo actual, priorizando impacto vs complejidad. Revisar trimestralmente basado en feedback de usuarios y evolución de OpenStack.

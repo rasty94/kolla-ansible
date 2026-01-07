@@ -6,7 +6,6 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { 
   CheckCircle2, 
-  Circle, 
   Server, 
   Settings, 
   FileText, 
@@ -74,14 +73,11 @@ const DeploymentWizard: React.FC = () => {
   const {
     register: registerStep2,
     handleSubmit: handleSubmitStep2,
-    watch: watchStep2,
     formState: { errors: errorsStep2 },
   } = useForm<Step2Data>({
     resolver: zodResolver(step2Schema),
     defaultValues: { services: deploymentData.services || [] },
   });
-
-  const selectedServices = watchStep2('services') || [];
 
   // Form para Step 3
   const {

@@ -22,6 +22,7 @@ import NotFound from './pages/NotFound';
 import { ThemeProvider } from './contexts/ThemeContext';
 import { AuthProvider } from './contexts/AuthContext';
 import { WebSocketProvider } from './contexts/WebSocketContext';
+import { EnvironmentProvider } from './contexts/EnvironmentContext';
 
 // Create React Query client
 const queryClient = new QueryClient({
@@ -40,44 +41,46 @@ const App: React.FC = () => {
       <ThemeProvider>
         <AuthProvider>
           <WebSocketProvider>
-            <BrowserRouter>
-              <Routes>
-                <Route path="/" element={<MainLayout />}>
-                  <Route index element={<Navigate to="/dashboard" replace />} />
-                  <Route path="dashboard" element={<Dashboard />} />
-                  <Route path="deploy/*" element={<DeploymentWizard />} />
-                  <Route path="inventory" element={<InventoryManager />} />
-                  <Route path="operations" element={<OperationsPanel />} />
-                  <Route path="logs" element={<Logs />} />
-                  <Route path="config" element={<ConfigEditor />} />
-                  <Route path="*" element={<NotFound />} />
-                </Route>
-              </Routes>
-              <Toaster 
-                position="top-right"
-                toastOptions={{
-                  duration: 4000,
-                  style: {
-                    background: '#363636',
-                    color: '#fff',
-                  },
-                  success: {
-                    duration: 3000,
-                    iconTheme: {
-                      primary: '#10b981',
-                      secondary: '#fff',
+            <EnvironmentProvider>
+              <BrowserRouter>
+                <Routes>
+                  <Route path="/" element={<MainLayout />}>
+                    <Route index element={<Navigate to="/dashboard" replace />} />
+                    <Route path="dashboard" element={<Dashboard />} />
+                    <Route path="deploy/*" element={<DeploymentWizard />} />
+                    <Route path="inventory" element={<InventoryManager />} />
+                    <Route path="operations" element={<OperationsPanel />} />
+                    <Route path="logs" element={<Logs />} />
+                    <Route path="config" element={<ConfigEditor />} />
+                    <Route path="*" element={<NotFound />} />
+                  </Route>
+                </Routes>
+                <Toaster 
+                  position="top-right"
+                  toastOptions={{
+                    duration: 4000,
+                    style: {
+                      background: '#363636',
+                      color: '#fff',
                     },
-                  },
-                  error: {
-                    duration: 5000,
-                    iconTheme: {
-                      primary: '#ef4444',
-                      secondary: '#fff',
+                    success: {
+                      duration: 3000,
+                      iconTheme: {
+                        primary: '#10b981',
+                        secondary: '#fff',
+                      },
                     },
-                  },
-                }}
-              />
-            </BrowserRouter>
+                    error: {
+                      duration: 5000,
+                      iconTheme: {
+                        primary: '#ef4444',
+                        secondary: '#fff',
+                      },
+                    },
+                  }}
+                />
+              </BrowserRouter>
+            </EnvironmentProvider>
           </WebSocketProvider>
         </AuthProvider>
       </ThemeProvider>

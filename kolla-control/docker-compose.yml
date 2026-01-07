@@ -13,7 +13,7 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
     ports:
-      - "3306:3306"
+      - "3307:3306"
     command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
@@ -28,7 +28,7 @@ services:
     image: redis:7-alpine
     container_name: kolla-control-redis
     ports:
-      - "6379:6379"
+      - "6380:6379"
     healthcheck:
       test: ["CMD", "redis-cli", "ping"]
       interval: 10s
@@ -40,12 +40,14 @@ services:
   # FastAPI Backend
   backend:
     build:
-      context: .
-      dockerfile: docker/backend.Dockerfile
+      context: ./backend
+      dockerfile: ../docker/backend.Dockerfile
     container_name: kolla-control-backend
     environment:
       DATABASE_URL: mysql+aiomysql://kolla_control:kolla_control_dev@mariadb:3306/kolla_control
       REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
       SECRET_KEY: dev-secret-key-change-in-production
     volumes:
       - ./backend:/app
@@ -64,12 +66,14 @@ services:
   # Celery Worker
   celery-worker:
     build:
-      context: .
-      dockerfile: docker/backend.Dockerfile
+      context: ./backend
+      dockerfile: ../docker/backend.Dockerfile
     container_name: kolla-control-celery
     environment:
       DATABASE_URL: mysql+aiomysql://kolla_control:kolla_control_dev@mariadb:3306/kolla_control
       REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
       SECRET_KEY: dev-secret-key-change-in-production
     volumes:
       - ./backend:/app
@@ -89,11 +93,14 @@ services:
       context: ./backend
       dockerfile: ../docker/backend.Dockerfile
     container_name: kolla-control-flower
-    command: celery -A app.tasks.celery_app flower --port=5555
+    command: celery -A app.core.celery flower --port=5555
     ports:
       - "5555:5555"
     env_file:
       - ./backend/.env
+    environment:
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
     depends_on:
       - redis
       - celery-worker

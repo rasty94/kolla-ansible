@@ -172,17 +172,67 @@ async def delete_host(
     return Message(message=f"Host {host.hostname} deleted successfully")
 
 
-@router.post("/sync-foreman", response_model=Message)
-async def sync_from_foreman(
+@router.post("/generate", response_model=Message)
+async def generate_inventory(
     db: AsyncSession = Depends(get_db),
 ):
     """
-    Synchronize hosts from Foreman
-    
-    This endpoint will fetch hosts from Foreman and update the inventory.
+    Generate Ansible inventory file from database
     """
-    # TODO: Implement Foreman synchronization
-    raise HTTPException(
-        status_code=status.HTTP_501_NOT_IMPLEMENTED,
-        detail="Foreman synchronization not yet implemented",
-    )
+    from app.services.inventory_service import inventory_service
+    
+    # Fetch all hosts
+    result = await db.execute(select(Host))
+    hosts = result.scalars().all()
+    
+    try:
+        inventory_service.save_inventory(hosts)
+        return Message(message="Inventory file generated successfully")
+    except Exception as e:
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error generating inventory: {str(e)}",
+        )
+
+
+@router.post("/load", response_model=Message)
+async def load_inventory(
+    db: AsyncSession = Depends(get_db),
+):
+    """
+    Load hosts from Ansible inventory file
+    """
+    from app.services.inventory_service import inventory_service
+    
+    try:
+        parsed_hosts = inventory_service.parse_inventory_file()
+        
+        count = 0
+        for host_data in parsed_hosts:
+            # Check if host exists
+            result = await db.execute(
+                select(Host).where(Host.hostname == host_data["hostname"])
+            )
+            existing = result.scalar_one_or_none()
+            
+            if existing:
+                # Update existing
+                for key, value in host_data.items():
+                    if key != "hostname":
+                        setattr(existing, key, value)
+            else:
+                # Create new
+                new_host = Host(**host_data)
+                new_host.is_active = True
+                db.add(new_host)
+                count += 1
+        
+        await db.commit()
+        return Message(message=f"Inventory loaded successfully. Added {count} new hosts.")
+        
+    except Exception as e:
+        await db.rollback()
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail=f"Error loading inventory: {str(e)}",
+        )

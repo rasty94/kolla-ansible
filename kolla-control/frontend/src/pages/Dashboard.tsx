@@ -1,6 +1,16 @@
+
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Activity, Server, CheckCircle, AlertCircle, Clock, TrendingUp } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { 
+  Server, 
+  Activity, 
+  AlertCircle, 
+  CheckCircle,
+  Rocket,
+  Clock,
+  TrendingUp
+} from 'lucide-react';
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import axios from 'axios';
 
@@ -239,6 +249,13 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      {/* Floating Action Button (Mobile) */}
+      <Link
+        to="/deploy"
+        className="lg:hidden fixed bottom-20 right-4 p-4 bg-blue-600 text-white rounded-full shadow-lg hover:bg-blue-700 transition-colors z-50"
+      >
+        <Rocket className="w-6 h-6" />
+      </Link>
     </div>
   );
 };

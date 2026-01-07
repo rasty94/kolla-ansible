@@ -13,7 +13,6 @@ import {
   XCircle,
   Loader2,
   Download,
-  Upload,
   X,
 } from 'lucide-react';
 import toast from 'react-hot-toast';
@@ -23,9 +22,9 @@ const hostSchema = z.object({
   hostname: z.string().min(1, 'Hostname requerido'),
   ip_address: z.string().ip('IP inválida'),
   ssh_user: z.string().min(1, 'Usuario SSH requerido'),
-  ssh_port: z.number().int().min(1).max(65535).default(22),
+  ssh_port: z.number().int().min(1).max(65535),
   roles: z.array(z.string()).min(1, 'Selecciona al menos un rol'),
-  is_active: z.boolean().default(true),
+  is_active: z.boolean(),
 });
 
 type Host = z.infer<typeof hostSchema> & { id: number };
@@ -135,6 +134,41 @@ const InventoryManager: React.FC = () => {
     },
   });
 
+  // Generate Inventory Mutation
+  const generateMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/inventory/generate', {
+        method: 'POST',
+      });
+      if (!response.ok) throw new Error('Error al generar inventario');
+      return response.json();
+    },
+    onSuccess: () => {
+      toast.success('Archivo de inventario generado exitosamente');
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
+
+  // Load Inventory Mutation
+  const loadMutation = useMutation({
+    mutationFn: async () => {
+      const response = await fetch('/api/inventory/load', {
+        method: 'POST',
+      });
+      if (!response.ok) throw new Error('Error al cargar inventario');
+      return response.json();
+    },
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ['hosts'] });
+      toast.success(data.message);
+    },
+    onError: (error: Error) => {
+      toast.error(error.message);
+    },
+  });
+
   const onSubmit = (data: Omit<Host, 'id'>) => {
     if (editingHost) {
       updateMutation.mutate({ ...data, id: editingHost.id });
@@ -228,6 +262,22 @@ const InventoryManager: React.FC = () => {
             Exportar
           </button>
           <button
+            onClick={() => generateMutation.mutate()}
+            disabled={generateMutation.isPending}
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2"
+          >
+            {generateMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Server className="w-5 h-5" />}
+            Generar
+          </button>
+          <button
+            onClick={() => loadMutation.mutate()}
+            disabled={loadMutation.isPending}
+            className="px-4 py-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-700 flex items-center gap-2"
+          >
+            {loadMutation.isPending ? <Loader2 className="w-5 h-5 animate-spin" /> : <Download className="w-5 h-5" />}
+            Cargar
+          </button>
+          <button
             onClick={() => {
               setEditingHost(null);
               reset();
@@ -281,101 +331,170 @@ const InventoryManager: React.FC = () => {
             <p>No hay hosts disponibles</p>
           </div>
         ) : (
-          <table className="w-full">
-            <thead className="bg-gray-50 dark:bg-gray-700">
-              <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Hostname
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  IP Address
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  SSH User
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Roles
-                </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Estado
-                </th>
-                <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
-                  Acciones
-                </th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+          <>
+            {/* Desktop Table */}
+            <table className="hidden md:table w-full">
+              <thead className="bg-gray-50 dark:bg-gray-700">
+                <tr>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Hostname
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    IP Address
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    SSH User
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Roles
+                  </th>
+                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Estado
+                  </th>
+                  <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 dark:text-gray-400 uppercase tracking-wider">
+                    Acciones
+                  </th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
+                {filteredHosts.map((host) => (
+                  <tr
+                    key={host.id}
+                    className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                  >
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <Server className="w-5 h-5 text-gray-400 mr-3" />
+                        <div className="text-sm font-medium text-gray-900 dark:text-white">
+                          {host.hostname}
+                        </div>
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900 dark:text-white">
+                        {host.ip_address}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      <div className="text-sm text-gray-900 dark:text-white">
+                        {host.ssh_user}:{host.ssh_port}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="flex flex-wrap gap-1">
+                        {host.roles.map((roleId) => {
+                          const role = AVAILABLE_ROLES.find((r) => r.id === roleId);
+                          return (
+                            <span
+                              key={roleId}
+                              className={`px-2 py-1 text-xs rounded-full bg-${role?.color}-100 dark:bg-${role?.color}-900/30 text-${role?.color}-800 dark:text-${role?.color}-300`}
+                            >
+                              {role?.name}
+                            </span>
+                          );
+                        })}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap">
+                      {host.is_active ? (
+                        <span className="flex items-center gap-1 text-green-600">
+                          <CheckCircle className="w-4 h-4" />
+                          <span className="text-sm">Activo</span>
+                        </span>
+                      ) : (
+                        <span className="flex items-center gap-1 text-red-600">
+                          <XCircle className="w-4 h-4" />
+                          <span className="text-sm">Inactivo</span>
+                        </span>
+                      )}
+                    </td>
+                    <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                      <div className="flex justify-end gap-2">
+                        <button
+                          onClick={() => handleEdit(host)}
+                          className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                        >
+                          <Pencil className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={() => handleDelete(host.id)}
+                          className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                        >
+                          <Trash2 className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+
+            {/* Mobile Cards */}
+            <div className="md:hidden divide-y divide-gray-200 dark:divide-gray-700">
               {filteredHosts.map((host) => (
-                <tr
-                  key={host.id}
-                  className="hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
-                >
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">
-                      <Server className="w-5 h-5 text-gray-400 mr-3" />
-                      <div className="text-sm font-medium text-gray-900 dark:text-white">
-                        {host.hostname}
+                <div key={host.id} className="p-4 space-y-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <Server className="w-5 h-5 text-gray-400" />
+                      <div>
+                        <h3 className="text-sm font-medium text-gray-900 dark:text-white">
+                          {host.hostname}
+                        </h3>
+                        <p className="text-xs text-gray-500 dark:text-gray-400">
+                          {host.ip_address}
+                        </p>
                       </div>
                     </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 dark:text-white">
-                      {host.ip_address}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="text-sm text-gray-900 dark:text-white">
-                      {host.ssh_user}:{host.ssh_port}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4">
-                    <div className="flex flex-wrap gap-1">
-                      {host.roles.map((roleId) => {
-                        const role = AVAILABLE_ROLES.find((r) => r.id === roleId);
-                        return (
-                          <span
-                            key={roleId}
-                            className={`px-2 py-1 text-xs rounded-full bg-${role?.color}-100 dark:bg-${role?.color}-900/30 text-${role?.color}-800 dark:text-${role?.color}-300`}
-                          >
-                            {role?.name}
-                          </span>
-                        );
-                      })}
-                    </div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
-                    {host.is_active ? (
-                      <span className="flex items-center gap-1 text-green-600">
-                        <CheckCircle className="w-4 h-4" />
-                        <span className="text-sm">Activo</span>
-                      </span>
-                    ) : (
-                      <span className="flex items-center gap-1 text-red-600">
-                        <XCircle className="w-4 h-4" />
-                        <span className="text-sm">Inactivo</span>
-                      </span>
-                    )}
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <div className="flex justify-end gap-2">
+                    <div className="flex items-center gap-2">
                       <button
                         onClick={() => handleEdit(host)}
-                        className="text-blue-600 hover:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300"
+                        className="p-2 text-blue-600 hover:bg-blue-50 dark:hover:bg-blue-900/20 rounded-full"
                       >
-                        <Pencil className="w-5 h-5" />
+                        <Pencil className="w-4 h-4" />
                       </button>
                       <button
                         onClick={() => handleDelete(host.id)}
-                        className="text-red-600 hover:text-red-900 dark:text-red-400 dark:hover:text-red-300"
+                        className="p-2 text-red-600 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-full"
                       >
-                        <Trash2 className="w-5 h-5" />
+                        <Trash2 className="w-4 h-4" />
                       </button>
                     </div>
-                  </td>
-                </tr>
+                  </div>
+
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-gray-500 dark:text-gray-400">
+                      {host.ssh_user}:{host.ssh_port}
+                    </span>
+                    {host.is_active ? (
+                      <span className="flex items-center gap-1 text-green-600 text-xs">
+                        <CheckCircle className="w-3 h-3" />
+                        Activo
+                      </span>
+                    ) : (
+                      <span className="flex items-center gap-1 text-red-600 text-xs">
+                        <XCircle className="w-3 h-3" />
+                        Inactivo
+                      </span>
+                    )}
+                  </div>
+
+                  <div className="flex flex-wrap gap-1">
+                    {host.roles.map((roleId) => {
+                      const role = AVAILABLE_ROLES.find((r) => r.id === roleId);
+                      return (
+                        <span
+                          key={roleId}
+                          className={`px-2 py-1 text-xs rounded-full bg-${role?.color}-100 dark:bg-${role?.color}-900/30 text-${role?.color}-800 dark:text-${role?.color}-300`}
+                        >
+                          {role?.name}
+                        </span>
+                      );
+                    })}
+                  </div>
+                </div>
               ))}
-            </tbody>
-          </table>
+            </div>
+          </>
         )}
       </div>
 

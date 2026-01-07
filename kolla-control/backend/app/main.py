@@ -40,6 +40,8 @@ app = FastAPI(
     lifespan=lifespan,
 )
 
+
+
 # Configure CORS
 app.add_middleware(
     CORSMiddleware,
@@ -48,6 +50,8 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
 
 # Mount Prometheus metrics endpoint
 if settings.ENABLE_METRICS:
@@ -79,6 +83,12 @@ async def health_check():
         },
         status_code=200,
     )
+
+
+# Mount Socket.IO (Must be last)
+from app.core.socket import sio
+import socketio
+app = socketio.ASGIApp(sio, app, socketio_path="/socket.io")
 
 
 if __name__ == "__main__":

@@ -3,12 +3,14 @@ fastapi==0.115.5
 uvicorn[standard]==0.32.0
 pydantic==2.10.0
 pydantic-settings==2.6.1
+email-validator==2.1.0.post1
 
 # Database
 sqlalchemy==2.0.36
 alembic==1.14.0
 aiomysql==0.2.0
 cryptography==43.0.3
+greenlet==3.1.1
 
 # Task queue
 celery==5.4.0
@@ -26,6 +28,7 @@ aiohttp==3.10.10
 
 # WebSockets
 websockets==13.1
+python-socketio==5.11.0
 
 # Monitoring and logging
 prometheus-client==0.21.0
