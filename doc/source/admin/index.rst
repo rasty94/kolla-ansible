@@ -14,3 +14,4 @@ Admin Guides
    deployment-philosophy
    production-readiness/index
    password-rotation
+   proxysql
