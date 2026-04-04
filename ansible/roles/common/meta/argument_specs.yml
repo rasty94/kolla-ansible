@@ -1,0 +1,15 @@
+---
+# Argument specs for common role (example)
+argument_spec:
+  api_interface_address:
+    type: str
+    required: false
+    default: "127.0.0.1"
+  enable_container_healthchecks:
+    type: bool
+    required: false
+    default: true
+  default_container_dimensions:
+    type: str
+    required: false
+    default: "small"

@@ -1,5 +1,6 @@
 Capacity Planning Guide
-======================
+=======================
+
 
 This guide helps operators plan resource requirements for Kolla-Ansible deployments.
 

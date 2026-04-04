@@ -1,0 +1,16 @@
+---
+# Argument specs for Nova role (example)
+# Use this file to validate role variables via ansible-core features
+argument_spec:
+  nova_api_port:
+    type: int
+    required: false
+    default: 8774
+  nova_api_enable_healthchecks:
+    type: bool
+    required: false
+    default: true
+  nova_database_name:
+    type: str
+    required: false
+    default: "nova"

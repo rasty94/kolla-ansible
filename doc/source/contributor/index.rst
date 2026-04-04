@@ -24,3 +24,8 @@ We welcome everyone to join our project!
    release-management
    ci
    setup-identity-provider
+   ../architecture/index
+   ../developer/testing
+   ../developer/debugging
+   ../adrs/index
+   role-variable-docs

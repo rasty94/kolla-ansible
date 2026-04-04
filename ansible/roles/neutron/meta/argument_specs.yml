@@ -1,0 +1,15 @@
+---
+# Argument specs for Neutron role (example)
+argument_spec:
+  neutron_server_port:
+    type: int
+    required: false
+    default: 9696
+  neutron_agent_workers:
+    type: int
+    required: false
+    default: 2
+  enable_neutron:
+    type: bool
+    required: false
+    default: true

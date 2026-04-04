@@ -12,4 +12,5 @@ Admin Guides
    etcd
    production-architecture-guide
    deployment-philosophy
+   production-readiness/index
    password-rotation

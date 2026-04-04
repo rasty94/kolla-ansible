@@ -1,5 +1,5 @@
 Security Hardening Checklist
-===========================
+============================
 
 Pre-deployment Security Configuration
 -------------------------------------

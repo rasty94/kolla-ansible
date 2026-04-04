@@ -1,0 +1,15 @@
+---
+# Argument specs for Keystone role (example)
+argument_spec:
+  keystone_admin_token:
+    type: str
+    required: false
+    default: "changeme"
+  keystone_public_port:
+    type: int
+    required: false
+    default: 5000
+  enable_keystone:
+    type: bool
+    required: false
+    default: true

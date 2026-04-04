@@ -57,3 +57,6 @@ ansible/*.retry
 # Others
 .DS_Store
 .vimrc
+
+venv
+.lock

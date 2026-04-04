@@ -69,6 +69,7 @@ User Guide
    :maxdepth: 2
 
    user/index
+   user/troubleshooting/index
 
 Reference
 =========
@@ -77,6 +78,7 @@ Reference
    :maxdepth: 2
 
    reference/index
+   reference/api/index
 
 Contributor Guide
 =================

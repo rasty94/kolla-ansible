@@ -87,8 +87,17 @@ nova_config_validation:
 # Database
 ####################
 # These are kept for backwards compatibility, as cell0 references them.
+# The name of the Nova application database
+# Type: string
+# Default: 'nova'
 nova_database_name: "nova"
+# The database user used by Nova (may be overridden when using common DB user)
+# Type: string
+# Default: 'nova' (or common database user if configured)
 nova_database_user: "{% if use_preconfigured_databases | bool and use_common_mariadb_user | bool %}{{ database_user }}{% else %}nova{% endif %}"
+# Address of the database server for Nova, includes host and port
+# Type: string
+# Default: '{{ database_address }}:{{ database_port }}'
 nova_database_address: "{{ database_address | put_address_in_context('url') }}:{{ database_port }}"
 
 nova_cell0_database_name: "{{ nova_database_name }}_cell0"
@@ -122,6 +131,9 @@ nova_database_shard:
 ####################
 # Docker
 ####################
+# Docker image tag used for Nova container images.
+# Type: string
+# Default: `{{ openstack_tag }}` (inherited from global tag)
 nova_tag: "{{ openstack_tag }}"
 
 nova_super_conductor_image: "{{ docker_registry ~ '/' if docker_registry else '' }}{{ docker_namespace }}/{{ docker_image_name_prefix }}nova-conductor"
@@ -141,8 +153,17 @@ nova_metadata_dimensions: "{{ default_container_dimensions }}"
 nova_scheduler_dimensions: "{{ default_container_dimensions }}"
 nova_super_conductor_dimensions: "{{ default_container_dimensions }}"
 
+# Enable healthchecks for nova-api containers
+# Type: bool
+# Default: `{{ enable_container_healthchecks }}`
 nova_api_enable_healthchecks: "{{ enable_container_healthchecks }}"
+# Healthcheck interval in seconds
+# Type: integer
+# Default: `{{ default_container_healthcheck_interval }}`
 nova_api_healthcheck_interval: "{{ default_container_healthcheck_interval }}"
+# Number of healthcheck retries
+# Type: integer
+# Default: `{{ default_container_healthcheck_retries }}`
 nova_api_healthcheck_retries: "{{ default_container_healthcheck_retries }}"
 nova_api_healthcheck_start_period: "{{ default_container_healthcheck_start_period }}"
 nova_api_healthcheck_test: ["CMD-SHELL", "healthcheck_curl {{ 'https' if nova_enable_tls_backend | bool else 'http' }}://{{ api_interface_address | put_address_in_context('url') }}:{{ nova_api_listen_port }} "]
